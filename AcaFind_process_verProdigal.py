@@ -1,5 +1,5 @@
 import os
-from functions import *
+from functions_verProdigal import *
 
 class Aca_Find_process:
 

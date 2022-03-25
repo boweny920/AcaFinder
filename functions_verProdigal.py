@@ -27,13 +27,16 @@ def strand(list):
     return gene_strand
 
 def proteinInfo(list):
-    return list[-1]
+    ##modified to fit prodigal output
+    return [list[0], list[-1]]
 
-def proteinID(IDinfo):
-    IDinfo = IDinfo.split(";")
+def proteinID(IDinfo_prodiagal):
+    ##modified to fit prodigal output
+    IDinfo = IDinfo_prodiagal[-1].split(";")
     for v in IDinfo:
-        if "protein_id=" in v:
-            ProID = str(v).strip('protein_id=')
+        if "ID=" in v:
+            ID = str(v).split("_",1)
+            ProID=str(IDinfo_prodiagal[0])+"_"+ID[-1]
             return ProID
 
 def protein_pos_start(list):
