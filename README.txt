@@ -1,3 +1,5 @@
+This is still the early installation instructions:
+
 1. VIBRANT
 Anaconda (currently running v1.2.0)
 	1. Install dependencies. See Requirements section above.
