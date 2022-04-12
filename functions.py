@@ -15,7 +15,7 @@ def get_file_directory_path(file_path):
     return directory_path[0]
 
 def length(list):
-    gene_length=int(list[4])-int(list[3]) + 1
+    gene_length=int(list[4])-int(list[3])
     return gene_length
 
 def contig(list):
@@ -27,16 +27,13 @@ def strand(list):
     return gene_strand
 
 def proteinInfo(list):
-    ##modified to fit prodigal output
-    return [list[0], list[-1]]
+    return list[-1]
 
-def proteinID(IDinfo_prodiagal):
-    ##modified to fit prodigal output
-    IDinfo = IDinfo_prodiagal[-1].split(";")
+def proteinID(IDinfo):
+    IDinfo = IDinfo.split(";")
     for v in IDinfo:
-        if "ID=" in v:
-            ID = str(v).split("_",1)
-            ProID=str(IDinfo_prodiagal[0])+"_"+ID[-1]
+        if "protein_id=" in v:
+            ProID = str(v).strip('protein_id=')
             return ProID
 
 def protein_pos_start(list):
@@ -219,31 +216,34 @@ def parse_hmmOutfile(hmm_outfile,hmm_coverage_cutoff): # redo the coverage calcu
 def potential_new_aca_faa_filemake(parsed_hmm_outfile,newAcrAca_faaFile,unhmmer_aca):
     ## Make a fasta file of potential Aca amino acid sequences
     ## Make a list of Aca, for checking results
-    Aca_Pro_lst=[]
+    Aca_Pro_lst_dic={}
     record_dict = SeqIO.to_dict(SeqIO.parse(newAcrAca_faaFile, "fasta"))
     newfile_name= parsed_hmm_outfile+".new_found_ACA.faa"
     with open(newfile_name,"w") as new:
-        acaout=subprocess.Popen(["awk '{print $4}' %s |sort -u "%parsed_hmm_outfile],shell=True, stdout=subprocess.PIPE)
-        for ID in acaout.stdout:
-            ID=ID.strip().decode('utf-8')
+        acaout=subprocess.Popen(["awk '{print $1,$2,$4}' %s |sort -u "%parsed_hmm_outfile],shell=True, stdout=subprocess.PIPE)
+        for line in acaout.stdout:
+            HTH,pfamID,ID=line.rstrip().decode('utf-8').split()
             if ID in unhmmer_aca:
-                Aca_Pro_lst.append(ID)
                 # If Aca is not in unhmmer, then it should not be considered as a potential Aca(here is to make sure that condiction "gene distance < 3" is applied)
+                if ID not in Aca_Pro_lst_dic:
+                    Aca_Pro_lst_dic.setdefault(ID,[HTH+"="+pfamID])
+                elif ID in Aca_Pro_lst_dic:
+                    Aca_Pro_lst_dic[ID].append(HTH+"="+pfamID)
                 SeqIO.write(record_dict[ID], new, "fasta")
                 #This is to consider the < than 3 genes condition, which had been implemented before in "faa_file_wrote_diamond_special" function
-    return newfile_name,Aca_Pro_lst
+    return newfile_name,Aca_Pro_lst_dic
 
-def final_result_check_output_generation(Acr_homolog_candidate_list_resultCheck,newfile_name,Aca_Pro_lst):
+def final_result_check_output_generation(Acr_homolog_candidate_list_resultCheck,newfile_name,Aca_Pro_lst_dic):
     #generation of final result checking file
     #Table will be tsv format
     #### GCF_number    ProteinID   Contig  Strand  Length  Start   End     Species     Acr     Aca ####
     Acr_Aca_loci_by_GBA = []
     for i in Acr_homolog_candidate_list_resultCheck:
-        if any(v for v in i if v[0] in Aca_Pro_lst):
+        if any(v for v in i if v[0] in Aca_Pro_lst_dic):
             for v in i:
                 # Check which ProteinID is the Aca homolog
-                if v[0] in Aca_Pro_lst:
-                    v.append("Aca_protein")
+                if v[0] in Aca_Pro_lst_dic:
+                    v.append("Aca_protein|"+";".join(Aca_Pro_lst_dic[v[0]]))
                 else:
                     v.append("NA")
             Acr_Aca_loci_by_GBA.append(i)

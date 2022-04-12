@@ -13,6 +13,6 @@ class annotation_prodigal:
                           "-o",os.path.join(self.out_dir,os.path.basename(str(self.fna))+"_prodigal_out.gff")]).wait()
         print("Genome annotated by Prodigal, files stored in %s"%self.out_dir)
         #returned gff, faa, fna
-        return os.path.join(self.out_dir,os.path.basename(str(self.fna))+"_prodigal_out.gff"), os.path.join(self.out_dir,os.path.basename(str(self.fna))+"_prodigal_out.faa"), os.path.join(self.out_dir,os.path.basename(str(self.fna))+"_prodigal_out.fna")
+        return os.path.join(self.out_dir,os.path.basename(str(self.fna))+"_prodigal_out.gff"), os.path.join(self.out_dir,os.path.basename(str(self.fna))+"_prodigal_out.faa")
 
 

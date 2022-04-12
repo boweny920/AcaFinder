@@ -1,5 +1,5 @@
-from functions import *
 import os
+from functions import *
 
 class Aca_Find_process:
 
@@ -90,4 +90,4 @@ class Aca_Find_process:
                 print("%s have %s number of identified Acr homologs, but not in the identified short gene operons, "
                       "maybe try and adjust the 'Short Gene Operon Identification' parameters" % (self.faa, len(protein_NP_list)))
         else:
-            print("No Acr homologs in annotated protein file '%s' under the current set condition, try loosen it a little :)" %self.faa)
+            print("No Acr homologs in annotated protein file '%s' under the current set condition :)" %self.faa)
