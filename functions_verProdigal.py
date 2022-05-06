@@ -1,5 +1,3 @@
-# Need to make a seperate function file for prodigal runs and ncbi annotation runs, with only a few functions, not the whole thing!
-
 import subprocess
 import sys
 
@@ -230,18 +228,18 @@ def potential_new_aca_faa_filemake(parsed_hmm_outfile,newAcrAca_faaFile,unhmmer_
             HTH,pfamID,ID=line.rstrip().decode('utf-8').split()
             if ID in unhmmer_aca:
                 # If Aca is not in unhmmer, then it should not be considered as a potential Aca(here is to make sure that condiction "gene distance < 3" is applied)
-                if ID not in Aca_Pro_lst_dic:
+                if ID not in Aca_Pro_lst_dic.keys():
                     Aca_Pro_lst_dic.setdefault(ID,[HTH+"="+pfamID])
-                elif ID in Aca_Pro_lst_dic:
+                    SeqIO.write(record_dict[ID], new, "fasta")
+                elif ID in Aca_Pro_lst_dic.keys():
                     Aca_Pro_lst_dic[ID].append(HTH+"="+pfamID)
-                SeqIO.write(record_dict[ID], new, "fasta")
                 #This is to consider the < than 3 genes condition, which had been implemented before in "faa_file_wrote_diamond_special" function
     return newfile_name,Aca_Pro_lst_dic
 
-def final_result_check_output_generation(Acr_homolog_candidate_list_resultCheck,newfile_name,Aca_Pro_lst_dic):
+def final_result_check_output_generation(Acr_homolog_candidate_list_resultCheck,newfile_name,Aca_Pro_lst_dic,publishedAcaHMM_hits_dic):
     #generation of final result checking file
     #Table will be tsv format
-    #### GCF_number    ProteinID   Contig  Strand  Length  Start   End     Species     Acr     Aca ####
+    #### GCF_number    ProteinID   Contig  Strand  Length  Start   End     Species     Acr     Aca  AcaHMM_HIT ####
     Acr_Aca_loci_by_GBA = []
     for i in Acr_homolog_candidate_list_resultCheck:
         if any(v for v in i if v[0] in Aca_Pro_lst_dic):
@@ -251,12 +249,18 @@ def final_result_check_output_generation(Acr_homolog_candidate_list_resultCheck,
                     v.append("Aca_protein|"+";".join(Aca_Pro_lst_dic[v[0]]))
                 else:
                     v.append("NA")
+                # Check which ProteinID has AcaHMM hits
+                if v[0] in publishedAcaHMM_hits_dic:
+                    v.append(";".join(publishedAcaHMM_hits_dic[v[0]]))
+                else:
+                    v.append("NA")
             Acr_Aca_loci_by_GBA.append(i)
 
     with open(newfile_name, "w") as newfile:
         for pro in Acr_Aca_loci_by_GBA:
             for value in pro:
-                for info in value: newfile.write("%s\t" % str(info))
+                # for info in value: newfile.write("%s\t" % str(info))
+                newfile.write("\t".join([str(v) for v in value]))
                 newfile.write("\n")
 
 def pos_rearrange(pos_list):
@@ -387,3 +391,20 @@ def pfamScan_run(operon_faa_file, pfam_hmm_dir,threads,HTH_alignment_evalue):
         if len(info_list)>0:
             dic_pfam.setdefault(record.id,";".join(info_list))
     return dic_pfam
+
+def Aca_HMM_search(aca_candidate_file,published_acaHMM,threads,hmm_outfile,evalue_cut_off,outdir,coverage_cutoff):
+    subprocess.Popen(
+        ['hmmsearch', '--domtblout', hmm_outfile, '-o', os.path.join(outdir, 'log_aca.hmm'), '--noali', "--cpu", threads,
+         '-E', evalue_cut_off, published_acaHMM, aca_candidate_file]).wait() # add coverage
+    AcaPub_Pro_lst_dic={}
+    for line in open(hmm_outfile).readlines():
+        line = line.split()
+        if "#" not in line[0]:
+            ID = line[0]
+            aca = line[3]
+            if (int(line[16])-int(line[15])+1)/int(line[5]) > coverage_cutoff: #Coverage filter
+                if ID not in AcaPub_Pro_lst_dic:
+                    AcaPub_Pro_lst_dic.setdefault(ID, [aca])
+                elif ID in AcaPub_Pro_lst_dic:
+                    AcaPub_Pro_lst_dic[ID].append(aca)
+    return AcaPub_Pro_lst_dic

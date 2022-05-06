@@ -1,7 +1,7 @@
-# Need to make a seperate function file for prodigal runs and ncbi annotation runs, with only a few functions, not the whole thing!
-
 import subprocess
 import sys
+
+import pandas as pd
 from Bio import SeqIO
 import os
 import pprint as pp
@@ -142,10 +142,10 @@ def make_and_check_output_directory(dpath):
         os.makedirs(dpath)
     return str(dpath)
 
-def run_diamond(database_file,outputdir,query,evalue_cutoff,coverage_cut_off): #add coverage cutoff
+def run_diamond(database_file,outputdir,query,evalue_cutoff,coverage_cut_off,threads): #add coverage cutoff
     ##Use this as dmond_out
     subprocess.Popen(['diamond','makedb','--in',database_file,'-d',os.path.join(outputdir,"diamond_db")]).wait()
-    subprocess.Popen(['diamond','blastp','-d',os.path.join(outputdir,"diamond_db"),'-f','6', 'qseqid', 'sseqid', 'pident', 'length', 'mismatch', 'gapopen' ,'qstart' ,'qend' ,'sstart' ,'send' ,'evalue' ,'bitscore', 'qlen', 'slen','--quiet','--more-sensitive','-q',query,'-p','5','-o',os.path.join(outputdir,"diamond_blastp_result.txt"),'-e',evalue_cutoff]).wait()
+    subprocess.Popen(['diamond','blastp','-d',os.path.join(outputdir,"diamond_db"),'-f','6', 'qseqid', 'sseqid', 'pident', 'length', 'mismatch', 'gapopen' ,'qstart' ,'qend' ,'sstart' ,'send' ,'evalue' ,'bitscore', 'qlen', 'slen','--quiet','--more-sensitive','-q',query,'-p',threads,'-o',os.path.join(outputdir,"diamond_blastp_result.txt"),'-e',evalue_cutoff]).wait()
     ## Output format 6 columns: Default: qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen
     subprocess.Popen(["awk -F '\t' '($8-$7)/$(NF-1) > %s {print}' %s > %s"%(str(coverage_cut_off),os.path.join(outputdir,"diamond_blastp_result.txt"),os.path.join(outputdir,"diamond_blastp_result.coverageParsed.txt"))],shell=True).wait()
     return os.path.join(outputdir,"diamond_blastp_result.coverageParsed.txt")
@@ -202,9 +202,9 @@ def aca_select_process(one_acr_aca_locus,faa_file,newfile_name_dirctory,Acr_prot
                 ##Check the gene distance between Acr and Aca, it should be less than 3 genes
     return unhmmer_aca
 
-def run_hmmscan(faafile,evalue_cut_off,hmmfile,outdir):
+def run_hmmscan(faafile,evalue_cut_off,hmmfile,outdir,threads):
     hmm_outfile=faafile+".hmmout"
-    subprocess.Popen(['hmmscan','--domtblout',hmm_outfile,'-o',os.path.join(outdir,'log.hmm'),'--noali','-E', evalue_cut_off,hmmfile,faafile]).wait()
+    subprocess.Popen(['hmmscan','--domtblout',hmm_outfile,'-o',os.path.join(outdir,'log.hmm'),'--noali',"--cpu",threads,'-E', evalue_cut_off,hmmfile,faafile]).wait()
     return hmm_outfile
 
 def parse_hmmOutfile(hmm_outfile,hmm_coverage_cutoff): # redo the coverage calculation part!
@@ -220,23 +220,24 @@ def potential_new_aca_faa_filemake(parsed_hmm_outfile,newAcrAca_faaFile,unhmmer_
     record_dict = SeqIO.to_dict(SeqIO.parse(newAcrAca_faaFile, "fasta"))
     newfile_name= parsed_hmm_outfile+".new_found_ACA.faa"
     with open(newfile_name,"w") as new:
-        acaout=subprocess.Popen(["awk '{print $1,$2,$4}' %s |sort -u "%parsed_hmm_outfile],shell=True, stdout=subprocess.PIPE)
+        acaout=subprocess.Popen(["awk '{print $1,$2,$4}' %s |sort -u"%parsed_hmm_outfile],shell=True, stdout=subprocess.PIPE)
         for line in acaout.stdout:
             HTH,pfamID,ID=line.rstrip().decode('utf-8').split()
             if ID in unhmmer_aca:
                 # If Aca is not in unhmmer, then it should not be considered as a potential Aca(here is to make sure that condiction "gene distance < 3" is applied)
-                if ID not in Aca_Pro_lst_dic:
+                if ID not in Aca_Pro_lst_dic.keys():
                     Aca_Pro_lst_dic.setdefault(ID,[HTH+"="+pfamID])
-                elif ID in Aca_Pro_lst_dic:
+                    SeqIO.write(record_dict[ID], new, "fasta")
+                elif ID in Aca_Pro_lst_dic.keys():
                     Aca_Pro_lst_dic[ID].append(HTH+"="+pfamID)
-                SeqIO.write(record_dict[ID], new, "fasta")
+
                 #This is to consider the < than 3 genes condition, which had been implemented before in "faa_file_wrote_diamond_special" function
     return newfile_name,Aca_Pro_lst_dic
 
-def final_result_check_output_generation(Acr_homolog_candidate_list_resultCheck,newfile_name,Aca_Pro_lst_dic):
+def final_result_check_output_generation(Acr_homolog_candidate_list_resultCheck,newfile_name,Aca_Pro_lst_dic,publishedAcaHMM_hits_dic):
     #generation of final result checking file
     #Table will be tsv format
-    #### GCF_number    ProteinID   Contig  Strand  Length  Start   End     Species     Acr     Aca ####
+    #### GCF_number    ProteinID   Contig  Strand  Length  Start   End     Species     Acr     Aca  AcaHMM_HIT ####
     Acr_Aca_loci_by_GBA = []
     for i in Acr_homolog_candidate_list_resultCheck:
         if any(v for v in i if v[0] in Aca_Pro_lst_dic):
@@ -246,10 +247,166 @@ def final_result_check_output_generation(Acr_homolog_candidate_list_resultCheck,
                     v.append("Aca_protein|"+";".join(Aca_Pro_lst_dic[v[0]]))
                 else:
                     v.append("NA")
+                # Check which ProteinID has AcaHMM hits
+                if v[0] in publishedAcaHMM_hits_dic:
+                    v.append(";".join(publishedAcaHMM_hits_dic[v[0]]))
+                else:
+                    v.append("NA")
             Acr_Aca_loci_by_GBA.append(i)
 
     with open(newfile_name, "w") as newfile:
         for pro in Acr_Aca_loci_by_GBA:
             for value in pro:
-                for info in value: newfile.write("%s\t" % str(info))
+                # for info in value: newfile.write("%s\t" % str(info))
+                newfile.write("\t".join([str(v) for v in value]))
                 newfile.write("\n")
+
+def pos_rearrange(pos_list):
+    if pos_list[0] < pos_list[1]: return pos_list
+    else:
+        tmp=pos_list[0]
+        pos_list[0]=pos_list[1]
+        pos_list[1]=tmp
+        return pos_list
+
+def distance_cal(pos1,pos2):
+    #map function, very useful
+    pos1=pos_rearrange([int(v) for v in pos1.split("-")])
+    pos2=pos_rearrange([int(v) for v in pos2.split("-")])
+    # Handy function to calculate distances
+    if pos2[0] >pos1[1]: return pos2[0]-pos1[1]
+    if pos1[0]<pos2[0]<pos1[1] or pos1[0]<pos2[1]<pos1[1] : return 0
+    if pos2[1]<pos1[0]:return pos1[0]-pos2[1]
+    else: return 0
+
+def find_complete_CRISPR_Cas_and_SelfTargeting(fna,outputfile,threads):
+    subprocess.Popen(["cctyper",fna,outputfile,"--no_plot","-t",threads,"--prodigal","meta"]).wait()
+    CRISPR_CasTable = subprocess.run(["find", outputfile, "-name", "CRISPR_Cas.tab"], stdout=subprocess.PIPE).stdout.decode('utf-8').rstrip()
+    if CRISPR_CasTable == "":
+        print("No complete CRISPR-Cas found input")
+        return None
+    else:
+        print("Complete CRISPR-Cas found and can be found in %s"%CRISPR_CasTable)
+        df_CRISPRcas = pd.read_csv(CRISPR_CasTable, sep="\t")
+        CC_list = []
+        fna_blastdb=os.path.join(outputfile, os.path.basename(fna) + ".blastDB")
+        subprocess.Popen(["makeblastdb", "-dbtype", "nucl", "-in", fna, "-out", fna_blastdb]).wait()
+
+        for index, CRISPR_Cas in df_CRISPRcas.iterrows():
+            location = "-".join(CRISPR_Cas["Operon_Pos"].lstrip("[").rstrip("]").replace(" ", "").split(","))
+            CRCasType = CRISPR_Cas["Prediction"]
+            spacer_names=CRISPR_Cas["CRISPRs"].lstrip("[").rstrip("]").replace("'", "").replace(" ", "").split(",") #Some CC have multiple spacers, thisis to get all the spacers
+            print("CRISPR-Cas spacers: ")
+            ## Look for self-targeting regions in the genome
+            self_targeting_regions = []
+            for spacer in spacer_names:
+                spacer_fna=subprocess.run(["find", outputfile, "-name", spacer+".fa"], stdout=subprocess.PIPE).stdout.decode('utf-8').rstrip()
+                print(spacer_fna)
+                spacer_fna_blastOutfile=os.path.join(outputfile, os.path.basename(fna) + "_VS_"+spacer+".blastnOUT")
+                spacer_contig=CRISPR_Cas["Contig"]
+                subprocess.Popen(["blastn","-query",spacer_fna,"-db",fna_blastdb,"-out", spacer_fna_blastOutfile, "-num_threads", str(threads),"-outfmt","6"]).wait()
+                df_blastOUT=pd.read_csv(spacer_fna_blastOutfile,header=None,sep="\t")
+                for index,row in df_blastOUT.iterrows():
+                    blast_location=str(row[8])+"-"+str(row[9])
+                    target_contig=str(row[1])
+                    if distance_cal(location,blast_location) > 3000 and target_contig==spacer_contig:
+                        print(target_contig,spacer_contig,distance_cal(location,blast_location))
+                        self_targeting_regions.append(target_contig + ":" + blast_location)
+                    elif target_contig != spacer_contig:
+                        print("Spacer above Self-Targets %s, at position: %s " %(target_contig,blast_location))
+                        self_targeting_regions.append(target_contig + ":" + blast_location)
+            if len(self_targeting_regions) >0:
+                CC_list.append(CRISPR_Cas["Contig"] + "|" + CRCasType + "|" + location + "|" + "STSS=" + ";".join(self_targeting_regions))
+            else:
+                CC_list.append(CRISPR_Cas["Contig"] + "|" + CRCasType + "|" + location + "|" + "No_STSS")
+            #Contig|CasTyper|Position|STSS_info
+        # CCs = ";".join(CC_list)
+        # print(CCs)
+        return CC_list
+
+def find_prophage(fna,outputdir,threads):
+    subprocess.Popen(["VIBRANT_run.py","-i",fna,"-folder",outputdir,"-t",threads,"-no_plot"]).wait()
+    phage_combined=subprocess.run(["find %s -name *phages_combined.faa"%outputdir],stdout=subprocess.PIPE,shell=True).stdout.decode('utf-8').rstrip()
+    if os.path.isfile(phage_combined) and os.path.getsize(phage_combined) > 0:
+        print("All prophage found stored in file %s"%phage_combined)
+        phage_pos_start_dic = {}
+        phage_pos_end_dic = {}
+        for line in subprocess.Popen(["grep", ">", phage_combined], stdout=subprocess.PIPE).stdout:
+            line = line.decode('utf-8').rstrip().split()
+            contig = line[0].lstrip(">")
+            fragment = [v for v in line if "fragment" in v]
+            positions_start_end = [int(s) for s in
+                                   [v.lstrip("(").rstrip(")") for v in line if ".." in v][0].split("..")]
+            if len(fragment) > 0:
+                contig_fragment_key = contig + "|" + fragment[0].split("_")[-2]
+                if contig_fragment_key not in phage_pos_start_dic:
+                    phage_pos_start_dic.setdefault(contig_fragment_key, [positions_start_end[0]])
+                else:
+                    phage_pos_start_dic[contig_fragment_key].append(positions_start_end[0])
+                if contig_fragment_key not in phage_pos_end_dic:
+                    phage_pos_end_dic.setdefault(contig_fragment_key, [positions_start_end[1]])
+                else:
+                    phage_pos_end_dic[contig_fragment_key].append(positions_start_end[1])
+            else:
+                contig_key = contig
+                if contig_key not in phage_pos_start_dic:
+                    phage_pos_start_dic.setdefault(contig_key, [positions_start_end[0]])
+                else:
+                    phage_pos_start_dic[contig_key].append(positions_start_end[0])
+                if contig_key not in phage_pos_end_dic:
+                    phage_pos_end_dic.setdefault(contig_key, [positions_start_end[1]])
+                else:
+                    phage_pos_end_dic[contig_key].append(positions_start_end[1])
+        phage_locations=[]
+        for key in phage_pos_start_dic:
+            pos_start = max(phage_pos_start_dic[key])
+            pos_end = min(phage_pos_end_dic[key])
+            phage_locations.append(key.split("|")[0] + ":" + str(pos_start) + "-" + str(pos_end)) # Contig:startPos-endPos
+        return phage_locations
+    else:
+        print("No prophage found in sequence")
+        return  None
+
+def prophage_harboring_operonFind(df_outTable,prophage_regions):
+    operon_location = df_outTable.head(1)["Start"].to_string(index=False) + "-" + df_outTable.tail(1)["End"].to_string(index=False)
+    operon_contig = df_outTable.head(1)["Contig ID"].to_string(index=False)
+    prophage_withOperon=[v for v in prophage_regions if distance_cal(v.split(":")[-1],operon_location) == 0 and operon_contig == v.split(":")[0]]
+    if len(prophage_withOperon)>0:
+        return ";".join(prophage_withOperon) # Contig:startPos-endPos
+    else:
+        return None
+
+def pfamScan_run(operon_faa_file, pfam_hmm_dir,threads,HTH_alignment_evalue):
+    pfamOut_file=operon_faa_file+".pfamScanOut"
+    subprocess.Popen(["pfam_scan.pl","-fasta",operon_faa_file,"-dir",pfam_hmm_dir,"-outfile",pfamOut_file,"-e_seq",HTH_alignment_evalue,"-cpu",threads]).wait()
+    dic_pfam={}
+    for record in SeqIO.parse(operon_faa_file,"fasta"):
+        info_list=[]
+        for line in subprocess.Popen(["grep", record.id,pfamOut_file],stdout=subprocess.PIPE).stdout:
+            line=line.decode('utf-8').rstrip().split()
+            if len(line)>1:
+                info_list.append("|".join([line[5],line[6],line[12],line[14]])) #hmmacc|hmmname|evalue|clan
+        if len(info_list)>0:
+            dic_pfam.setdefault(record.id,";".join(info_list))
+    return dic_pfam
+
+def Aca_HMM_search(aca_candidate_file,published_acaHMM,threads,hmm_outfile,evalue_cut_off,outdir,coverage_cutoff):
+    subprocess.Popen(
+        ['hmmsearch', '--domtblout', hmm_outfile, '-o', os.path.join(outdir, 'log_aca.hmm'), '--noali', "--cpu", threads,
+         '-E', evalue_cut_off, published_acaHMM, aca_candidate_file]).wait() # add coverage
+    AcaPub_Pro_lst_dic={}
+    hmm_outfile_parsed=hmm_outfile+".coverageParsed"
+    # newfile=open(hmm_outfile_parsed,"w")
+    for line in open(hmm_outfile).readlines():
+        line = line.split()
+        if "#" not in line[0]:
+            ID = line[0]
+            aca = line[3]
+            if (int(line[16])-int(line[15])+1)/int(line[5]) > coverage_cutoff: #Coverage filter
+                # newfile.write("\t".join(line))
+                # newfile.write("\n")
+                if ID not in AcaPub_Pro_lst_dic:
+                    AcaPub_Pro_lst_dic.setdefault(ID, [aca])
+                elif ID in AcaPub_Pro_lst_dic:
+                    AcaPub_Pro_lst_dic[ID].append(aca)
+    return AcaPub_Pro_lst_dic
