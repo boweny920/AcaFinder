@@ -15,7 +15,7 @@ def get_file_directory_path(file_path):
     return directory_path[0]
 
 def length(list):
-    gene_length=int(list[4])-int(list[3])
+    gene_length=int(list[4])-int(list[3]) + 1
     return gene_length
 
 def contig(list):
@@ -358,10 +358,14 @@ def find_prophage(fna,outputdir,threads):
                 else:
                     phage_pos_end_dic[contig_key].append(positions_start_end[1])
         phage_locations=[]
+        prophage_out_table=os.path.join(outputdir,"prophage_locations.csv")
+        newfile=open(prophage_out_table,"w")
+        newfile.write(",".join(["Contig","Start","End"])+"\n")
         for key in phage_pos_start_dic:
-            pos_start = max(phage_pos_start_dic[key])
-            pos_end = min(phage_pos_end_dic[key])
+            pos_end = max(phage_pos_start_dic[key])
+            pos_start = min(phage_pos_end_dic[key])
             phage_locations.append(key.split("|")[0] + ":" + str(pos_start) + "-" + str(pos_end)) # Contig:startPos-endPos
+            newfile.write(",".join([key.split("|")[0],str(pos_start),str(pos_end)])+"\n")
         return phage_locations
     else:
         print("No prophage found in sequence")
@@ -390,23 +394,58 @@ def pfamScan_run(operon_faa_file, pfam_hmm_dir,threads,HTH_alignment_evalue):
             dic_pfam.setdefault(record.id,";".join(info_list))
     return dic_pfam
 
-def Aca_HMM_search(aca_candidate_file,published_acaHMM,threads,hmm_outfile,evalue_cut_off,outdir,coverage_cutoff):
+def Aca_HMM_search(aca_candidate_file,published_acaHMM,threads,hmm_outfile,evalue_cut_off,outdir,coverage_cutoff,gff_file,fna_file):
+    fna_dic=SeqIO.to_dict(SeqIO.parse(fna_file,"fasta"))
     subprocess.Popen(
         ['hmmsearch', '--domtblout', hmm_outfile, '-o', os.path.join(outdir, 'log_aca.hmm'), '--noali', "--cpu", threads,
          '-E', evalue_cut_off, published_acaHMM, aca_candidate_file]).wait() # add coverage
     AcaPub_Pro_lst_dic={}
-    hmm_outfile_parsed=hmm_outfile+".coverageParsed"
-    # newfile=open(hmm_outfile_parsed,"w")
+    df=pd.DataFrame()
+    contig_list=[]
+    wpid_list=[]
+    start_list=[]
+    end_list=[]
+    strand_list=[]
+    contig_length_list=[]
+    hmm_ID_list = []
+    hmm_coverage_list=[]
+    evalue_list=[]
     for line in open(hmm_outfile).readlines():
         line = line.split()
         if "#" not in line[0]:
             ID = line[0]
             aca = line[3]
-            if (int(line[16])-int(line[15])+1)/int(line[5]) > coverage_cutoff: #Coverage filter
-                # newfile.write("\t".join(line))
-                # newfile.write("\n")
+            coverage=(int(line[18]) - int(line[17]) + 1) / int(line[2])
+            if coverage > coverage_cutoff: #Coverage filter
+                info_from_gff=subprocess.run(["grep CDS %s|grep %s"%(gff_file,ID)],shell=True,stdout=subprocess.PIPE).stdout.decode('utf-8').rstrip().split("\t")
+                contig_list.append(info_from_gff[0])
+                wpid_list.append(ID)
+                start_list.append(info_from_gff[3])
+                end_list.append(info_from_gff[4])
+                strand_list.append(info_from_gff[6])
+                contig_length_list.append(len(fna_dic[info_from_gff[0]].seq))
+                hmm_ID_list.append(aca)
+                hmm_coverage_list.append(str(coverage))
+                evalue_list.append(line[6])
+
                 if ID not in AcaPub_Pro_lst_dic:
                     AcaPub_Pro_lst_dic.setdefault(ID, [aca])
                 elif ID in AcaPub_Pro_lst_dic:
                     AcaPub_Pro_lst_dic[ID].append(aca)
+    if len(AcaPub_Pro_lst_dic) > 0:
+        aca_fasta_file = open(os.path.join(outdir, "Aca-like_protein.faa"), "w")
+        faa_dic = SeqIO.to_dict(SeqIO.parse(aca_candidate_file, "fasta"))
+        for key in AcaPub_Pro_lst_dic.keys():
+            SeqIO.write(faa_dic[key],aca_fasta_file,"fasta")
+        df["Contig"]=contig_list
+        df["Protein ID"]=wpid_list
+        df["Start Location"]= start_list
+        df["End Location"]= end_list
+        df["Strand"] = strand_list
+        df["Contig Length (nt)"]=contig_length_list
+        df["Aca HMM ID"]=hmm_ID_list
+        df["Aca-like Protein Coverage"]=hmm_coverage_list
+        df["Aca HMM Evalue"]=evalue_list
+        df.to_csv(os.path.join(outdir, 'Aca-like_protein.csv'),index=False)
+
     return AcaPub_Pro_lst_dic
