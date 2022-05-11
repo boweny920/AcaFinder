@@ -1,0 +1,15 @@
+#                                                                            --- full sequence --- -------------- this domain -------------   hmm coord   ali coord   env coord
+# target name        accession   tlen query name           accession   qlen   E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
+#------------------- ---------- ----- -------------------- ---------- ----- --------- ------ ----- --- --- --------- --------- ------ ----- ----- ----- ----- ----- ----- ----- ---- ---------------------
+HTH_17               PF12728.10    51 NZ_KB908456.1_91     -             84   7.8e-06   20.5   0.0   1   1   5.8e-08   9.5e-06   20.2   0.0     2    35    13    47    12    58 0.85 Helix-turn-helix domain
+HTH_36               PF13730.9     55 NZ_KB908456.1_91     -             84   0.00039   14.7   0.0   1   1   3.2e-06   0.00052   14.3   0.0    26    47    13    34     7    35 0.89 Helix-turn-helix domain
+#
+# Program:         hmmscan
+# Version:         3.3.2 (Nov 2020)
+# Pipeline mode:   SCAN
+# Query file:      example_fna_input/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-4.faa
+# Target file:     HMM/Pfam-A.clan_HTH_le150bp.hmm
+# Option settings: hmmscan -o example_fna_input/log.hmm --domtblout example_fna_input/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-4.faa.hmmout --noali -E 1e-3 --cpu 5 HMM/Pfam-A.clan_HTH_le150bp.hmm example_fna_input/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-4.faa 
+# Current dir:     /mnt/array1/bowen/AcaFinder_project/AcaFinder_Ver4
+# Date:            Wed May 11 18:55:23 2022
+# [ok]

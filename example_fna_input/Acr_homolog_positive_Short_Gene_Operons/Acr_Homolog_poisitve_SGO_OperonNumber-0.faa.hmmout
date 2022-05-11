@@ -1,0 +1,18 @@
+#                                                                            --- full sequence --- -------------- this domain -------------   hmm coord   ali coord   env coord
+# target name        accession   tlen query name           accession   qlen   E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
+#------------------- ---------- ----- -------------------- ---------- ----- --------- ------ ----- --- --- --------- --------- ------ ----- ----- ----- ----- ----- ----- ----- ---- ---------------------
+DUF1870              PF08965.13   118 NZ_KB908455.1_238    -            126   2.6e-28   93.0   0.0   1   1   2.6e-30   2.8e-28   92.8   0.0     1   113     1   112     1   117 0.94 Domain of unknown function (DUF1870)
+HTH_31               PF13560.9     64 NZ_KB908455.1_238    -            126   7.5e-06   20.6   1.7   1   2   1.4e-06   0.00016   16.4   0.2     5    48     5    48     5    67 0.87 Helix-turn-helix domain
+HTH_31               PF13560.9     64 NZ_KB908455.1_238    -            126   7.5e-06   20.6   1.7   2   2     0.013       1.5    3.7   0.1    31    59    83   113    80   120 0.77 Helix-turn-helix domain
+HTH_3                PF01381.25    55 NZ_KB908455.1_238    -            126   0.00053   14.4   0.0   1   1   9.3e-06     0.001   13.5   0.0     1    40     6    46     6    55 0.87 Helix-turn-helix
+Phage_antitermQ      PF06530.15   118 NZ_KB908455.1_240    -            117   6.1e-19   62.5   0.8   1   1     2e-21   6.5e-19   62.4   0.8     1   112     1   112     1   116 0.93 Phage antitermination protein Q
+#
+# Program:         hmmscan
+# Version:         3.3.2 (Nov 2020)
+# Pipeline mode:   SCAN
+# Query file:      example_fna_input/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-0.faa
+# Target file:     HMM/Pfam-A.clan_HTH_le150bp.hmm
+# Option settings: hmmscan -o example_fna_input/log.hmm --domtblout example_fna_input/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-0.faa.hmmout --noali -E 1e-3 --cpu 5 HMM/Pfam-A.clan_HTH_le150bp.hmm example_fna_input/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-0.faa 
+# Current dir:     /mnt/array1/bowen/AcaFinder_project/AcaFinder_Ver4
+# Date:            Wed May 11 18:55:21 2022
+# [ok]

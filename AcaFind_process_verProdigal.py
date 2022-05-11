@@ -147,6 +147,7 @@ class Aca_Find_process:
                                 if row["Protein ID"] in dic_pfam and pd.isna(row["Potential Aca"])==True :
                                     pfam_list.append(dic_pfam[row["Protein ID"]])
                                 else: pfam_list.append(np.nan)
+                                contig_length_list.append(len(fna_dic[row["Contig ID"]].seq))
                             df_outTable["Operon Number"]=operon_number_list
                             df_outTable["Complete CRISPR-Cas and STSS"] = Complete_CRISPR_Cas_inContig_list
                             df_outTable["Operon in Prophage"] = prophage_withOperon_location_list

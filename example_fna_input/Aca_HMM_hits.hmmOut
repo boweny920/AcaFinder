@@ -1,0 +1,20 @@
+#                                                                            --- full sequence --- -------------- this domain -------------   hmm coord   ali coord   env coord
+# target name        accession   tlen query name           accession   qlen   E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
+#------------------- ---------- ----- -------------------- ---------- ----- --------- ------ ----- --- --- --------- --------- ------ ----- ----- ----- ----- ----- ----- ----- ---- ---------------------
+NZ_KB908455.1_253    -            208 aca12                -            135     3e-13   47.8   0.0   1   1   1.4e-16   4.4e-13   47.3   0.0     5    65     6    67     2    81 0.90 # 255600 # 256223 # 1 # ID=2_253;partial=00;start_type=ATG;rbs_motif=GGAG/GAGG;rbs_spacer=5-10bp;gc_cont=0.571
+NZ_KB908455.1_238    -            126 aca2                 -            170     2e-29   99.9   0.3   1   1   1.5e-32   2.3e-29   99.7   0.3    32   137     1   112     1   119 0.93 # 248808 # 249185 # -1 # ID=2_238;partial=00;start_type=ATG;rbs_motif=GGA/GAG/AGG;rbs_spacer=5-10bp;gc_cont=0.569
+NZ_KB908455.1_253    -            208 aca2                 -            170   3.5e-12   43.8   0.0   1   1     3e-15   4.7e-12   43.3   0.0    31    93     2    63     1    78 0.87 # 255600 # 256223 # 1 # ID=2_253;partial=00;start_type=ATG;rbs_motif=GGAG/GAGG;rbs_spacer=5-10bp;gc_cont=0.571
+NZ_KB908455.1_253    -            208 aca3                 -            256   2.7e-12   44.8   0.0   1   1   1.1e-15   3.4e-12   44.5   0.0   112   166     5    59     1    87 0.83 # 255600 # 256223 # 1 # ID=2_253;partial=00;start_type=ATG;rbs_motif=GGAG/GAGG;rbs_spacer=5-10bp;gc_cont=0.571
+NZ_KB908455.1_253    -            208 aca5                 -            224   1.5e-11   42.3   0.0   1   1   6.1e-15   1.9e-11   41.9   0.0    82   141     4    60     1    99 0.79 # 255600 # 256223 # 1 # ID=2_253;partial=00;start_type=ATG;rbs_motif=GGAG/GAGG;rbs_spacer=5-10bp;gc_cont=0.571
+NZ_KB908455.1_253    -            208 aca6                 -            230   2.7e-13   47.8   0.0   1   1     1e-16   3.2e-13   47.5   0.0    96   155     5    71     1   113 0.83 # 255600 # 256223 # 1 # ID=2_253;partial=00;start_type=ATG;rbs_motif=GGAG/GAGG;rbs_spacer=5-10bp;gc_cont=0.571
+NZ_KB908455.1_253    -            208 aca9                 -            190     6e-12   43.4   0.0   1   1   2.3e-15   7.2e-12   43.1   0.0    62   122     1    63     1   117 0.85 # 255600 # 256223 # 1 # ID=2_253;partial=00;start_type=ATG;rbs_motif=GGAG/GAGG;rbs_spacer=5-10bp;gc_cont=0.571
+#
+# Program:         hmmsearch
+# Version:         3.3.2 (Nov 2020)
+# Pipeline mode:   SEARCH
+# Query file:      HMM/published_13_Aca.hmm
+# Target file:     example_fna_input/GCF_000381965.1_ASM38196v1_genomic.fna.prodigalOUT/GCF_000381965.1_ASM38196v1_genomic.fna_prodigal_out.faa
+# Option settings: hmmsearch -o example_fna_input/log_aca.hmm --domtblout example_fna_input/Aca_HMM_hits.hmmOut --noali -E 1e-10 --cpu 5 HMM/published_13_Aca.hmm example_fna_input/GCF_000381965.1_ASM38196v1_genomic.fna.prodigalOUT/GCF_000381965.1_ASM38196v1_genomic.fna_prodigal_out.faa 
+# Current dir:     /mnt/array1/bowen/AcaFinder_project/AcaFinder_Ver4
+# Date:            Wed May 11 18:55:20 2022
+# [ok]

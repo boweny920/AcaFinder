@@ -1,0 +1,15 @@
+#                                                                            --- full sequence --- -------------- this domain -------------   hmm coord   ali coord   env coord
+# target name        accession   tlen query name           accession   qlen   E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
+#------------------- ---------- ----- -------------------- ---------- ----- --------- ------ ----- --- --- --------- --------- ------ ----- ----- ----- ----- ----- ----- ----- ---- ---------------------
+Phage_AlpA           PF05930.15    51 NZ_KB908455.1_274    -             85   5.1e-14   46.4   0.1   1   1   4.1e-16   6.7e-14   46.0   0.1    15    51    16    52     3    52 0.92 Prophage CP4-57 regulatory protein (AlpA)
+HTH_17               PF12728.10    51 NZ_KB908455.1_274    -             85   2.5e-07   25.2   0.0   1   1   2.6e-09   4.2e-07   24.5   0.0    11    51    14    56     5    56 0.84 Helix-turn-helix domain
+#
+# Program:         hmmscan
+# Version:         3.3.2 (Nov 2020)
+# Pipeline mode:   SCAN
+# Query file:      example_fna_input/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-3.faa
+# Target file:     HMM/Pfam-A.clan_HTH_le150bp.hmm
+# Option settings: hmmscan -o example_fna_input/log.hmm --domtblout example_fna_input/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-3.faa.hmmout --noali -E 1e-3 --cpu 5 HMM/Pfam-A.clan_HTH_le150bp.hmm example_fna_input/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-3.faa 
+# Current dir:     /mnt/array1/bowen/AcaFinder_project/AcaFinder_Ver4
+# Date:            Wed May 11 18:55:23 2022
+# [ok]
