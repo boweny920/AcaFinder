@@ -7,7 +7,7 @@ import numpy as np
 class Aca_Find_process:
 
     def __init__(self,fna_file,gff_file,faa_file,outputFolder,Acr_alignment_evalue,Acr_alignment_coverage,HTH_alignment_evalue,HTH_alignment_coverage,
-                 all_protein_length_in_AcrAca_operon,intergenic_dist_in_AcrAca_operon,KnowAcrFaa,HTHhmm,Acr_Aca_inBetweenGenes,Virus_Flag,threads,phamDir):
+                 all_protein_length_in_AcrAca_operon,intergenic_dist_in_AcrAca_operon,KnowAcrFaa,HTHhmm,Acr_Aca_inBetweenGenes,Virus_Flag,threads,phamDir,published_acaHMM,acaHMM_evalue,acaHMM_cov):
         self.fna=fna_file
         self.faa=faa_file
         self.gff=gff_file
@@ -24,6 +24,9 @@ class Aca_Find_process:
         self.Viral_Flag=Virus_Flag
         self.threads=threads
         self.phamDir=phamDir
+        self.published_acaHMM=published_acaHMM
+        self.acaHMM_evalue=acaHMM_evalue
+        self.acaHMM_cov=acaHMM_cov
 
     def run_process(self):
         sub_outputfolder_path=self.outputFolder
@@ -38,6 +41,8 @@ class Aca_Find_process:
 
         loci_list,loci_list_result_check=loci_select_before_diamond(file_dic,self.all_protein_length_in_AcrAca_operon,self.intergenic_dist_in_AcrAca_operon)
         diamond_outfile=run_diamond(self.faa,sub_outputfolder_path,self.KnowAcrFaa,self.Acr_alignment_evalue,self.Acr_alignment_coverage,self.threads) # include KnownAcr.faa in tool directory
+        # Search the entire genome for potetnial Aca hmm hits
+        publishedAcaHMM_hits_dic = Aca_HMM_search(self.faa, self.published_acaHMM, self.threads,os.path.join(sub_outputfolder_path, "Aca_HMM_hits.hmmOut"),self.acaHMM_evalue,sub_outputfolder_path,self.acaHMM_cov,self.fna) # modified for prodigal
 
         if is_non_zero_file(diamond_outfile) is not False:
             print("Acr homologs found in annotation genome","...")
@@ -58,7 +63,7 @@ class Aca_Find_process:
                     for v in i:
                         # Check which ProteinID is the Acr homolog
                         if v[0] in protein_NP_list:
-                            v.append(dic_Acr[v[0]])
+                            v.append(dic_Acr[v[0]].replace(',',';'))
                         else:
                             v.append("NA")
                     Acr_homolog_candidate_list_resultCheck.append(i)
@@ -68,6 +73,7 @@ class Aca_Find_process:
                 # Put the new faa files in a directory called "Acr_homolog_positive_short_gene_operons"
                 output_1_DirPath = os.path.join(sub_outputfolder_path,"Acr_homolog_positive_Short_Gene_Operons")
                 os.makedirs(output_1_DirPath)
+
                 # Write each locus with Acr homolog into individual fasta files
                 output_checkResult_tables=[]
                 for order, locus in enumerate(Acr_homolog_candidate_list):
@@ -92,7 +98,7 @@ class Aca_Find_process:
                             Acr_Aca_loci_checkResult = os.path.join(output_1_DirPath, "GBA_identified_AcrAca_loci_OperonNumber-" + str(
                                 order) + ".check_Result")
                             final_result_check_output_generation(Acr_homolog_candidate_list_resultCheck,
-                                                                 Acr_Aca_loci_checkResult, Aca_Pro_lst)
+                                                                 Acr_Aca_loci_checkResult, Aca_Pro_lst,publishedAcaHMM_hits_dic)
                             output_checkResult_tables.append(Acr_Aca_loci_checkResult)
                             #####For result checking#####
 
@@ -108,44 +114,48 @@ class Aca_Find_process:
                         complete_CRISPR_Cas_systems=None
                         prophage_regions=None
                     protein_faa_dic=SeqIO.to_dict(SeqIO.parse(self.faa,"fasta"))
-                    df_allResult=pd.DataFrame(columns=["Operon Number","Protein ID","Contig ID","Strand","Protein Length","Start","End","Acr Homolog","Potential Aca","Pfam","Complete CRISPR-Cas and STSS", "Operon in Prophage","Protein Sequence"])
+                    fna_dic = SeqIO.to_dict(SeqIO.parse(self.fna, "fasta"))
+                    df_allResult=pd.DataFrame(columns=["Operon Number","Protein ID","Contig ID","Strand","Protein Length","Start","End","Acr Homolog","Potential Aca","AcaHMM HIT","Pfam","Complete CRISPR-Cas and STSS", "Operon in Prophage","Protein Sequence"])
                     for out_table in output_checkResult_tables:
-                        faa_list = []
-                        operon_number_list = []
-                        prophage_withOperon_location_list=[]
-                        Complete_CRISPR_Cas_inContig_list = []
-                        pfam_list=[]
-                        df_outTable = pd.read_csv(out_table,header=None,sep="\t")
-                        df_outTable.drop(8, axis=1, inplace=True)
-                        df_outTable.columns=["Protein ID","Contig ID","Strand","Protein Length","Start","End","Acr Homolog","Potential Aca"]
+                        if is_non_zero_file(out_table):
+                            faa_list = []
+                            operon_number_list = []
+                            prophage_withOperon_location_list=[]
+                            Complete_CRISPR_Cas_inContig_list = []
+                            pfam_list=[]
+                            contig_length_list = []
+                            df_outTable = pd.read_csv(out_table,header=None,sep="\t")
+                            # df_outTable.drop(9, axis=1, inplace=True) #Need to check, need to drop still?
+                            df_outTable.columns=["Protein ID","Contig ID","Strand","Protein Length","Start","End","Acr Homolog","Potential Aca","AcaHMM HIT"]
 
-                        ##check if aca operon in prophage
-                        if prophage_regions is not None:
-                            prophage_containing_AcaOperon = prophage_harboring_operonFind(df_outTable, prophage_regions) # Contig:startPos-endPos/None
-                        else: prophage_containing_AcaOperon = None
+                            ##check if aca operon in prophage
+                            if prophage_regions is not None:
+                                prophage_containing_AcaOperon = prophage_harboring_operonFind(df_outTable, prophage_regions) # Contig:startPos-endPos/None
+                            else: prophage_containing_AcaOperon = None
 
-                        #Run pfamscan on the operon faa file
-                        operon_faa_file = os.path.join(output_1_DirPath, "Acr_Homolog_poisitve_SGO_OperonNumber-" + out_table.split("-")[-1].rstrip(".check_Result") + ".faa")
-                        dic_pfam = pfamScan_run(operon_faa_file,self.phamDir,self.threads,self.HTH_alignment_evalue)
+                            #Run pfamscan on the operon faa file
+                            operon_faa_file = os.path.join(output_1_DirPath, "Acr_Homolog_poisitve_SGO_OperonNumber-" + out_table.split("-")[-1].rstrip(".check_Result") + ".faa")
+                            dic_pfam = pfamScan_run(operon_faa_file,self.phamDir,self.threads,self.HTH_alignment_evalue)
 
-                        for index, row in df_outTable.iterrows():
-                            faa_list.append(str(protein_faa_dic[row["Protein ID"]].seq))
-                            operon_number_list.append(out_table.rstrip(".check_Result").split("_")[-1])
-                            if prophage_containing_AcaOperon is not None: prophage_withOperon_location_list.append(prophage_containing_AcaOperon)
-                            else: prophage_withOperon_location_list.append(np.nan)
-                            if complete_CRISPR_Cas_systems is not None: Complete_CRISPR_Cas_inContig_list.append(";".join(complete_CRISPR_Cas_systems))
-                            else: Complete_CRISPR_Cas_inContig_list.append(np.nan)
-                            if row["Protein ID"] in dic_pfam:
-                                pfam_list.append(dic_pfam[row["Protein ID"]])
-                            else: pfam_list.append(np.nan)
-                        df_outTable["Operon Number"]=operon_number_list
-                        df_outTable["Complete CRISPR-Cas and STSS"] = Complete_CRISPR_Cas_inContig_list
-                        df_outTable["Operon in Prophage"] = prophage_withOperon_location_list
-                        df_outTable["Protein Sequence"]=faa_list
-                        df_outTable["Pfam"]=pfam_list
-                        df_outTable = df_outTable[["Operon Number","Protein ID","Contig ID","Strand","Protein Length","Start","End","Acr Homolog","Potential Aca","Pfam","Complete CRISPR-Cas and STSS", "Operon in Prophage","Protein Sequence"]]
-                        df_allResult=df_allResult.append(df_outTable)
-                    df_allResult.to_csv(os.path.join(sub_outputfolder_path,"All_Aca_operons.csv"),index=False)
+                            for index, row in df_outTable.iterrows():
+                                faa_list.append(str(protein_faa_dic[row["Protein ID"]].seq))
+                                operon_number_list.append(out_table.rstrip(".check_Result").split("_")[-1])
+                                if prophage_containing_AcaOperon is not None: prophage_withOperon_location_list.append(prophage_containing_AcaOperon)
+                                else: prophage_withOperon_location_list.append(np.nan)
+                                if complete_CRISPR_Cas_systems is not None: Complete_CRISPR_Cas_inContig_list.append(";".join(complete_CRISPR_Cas_systems))
+                                else: Complete_CRISPR_Cas_inContig_list.append(np.nan)
+                                if row["Protein ID"] in dic_pfam and pd.isna(row["Potential Aca"])==True :
+                                    pfam_list.append(dic_pfam[row["Protein ID"]])
+                                else: pfam_list.append(np.nan)
+                            df_outTable["Operon Number"]=operon_number_list
+                            df_outTable["Complete CRISPR-Cas and STSS"] = Complete_CRISPR_Cas_inContig_list
+                            df_outTable["Operon in Prophage"] = prophage_withOperon_location_list
+                            df_outTable["Protein Sequence"]=faa_list
+                            df_outTable["Pfam"]=pfam_list
+                            df_outTable["Contig Length (nt)"] = contig_length_list
+                            df_outTable = df_outTable[["Operon Number","Protein ID","Contig ID","Contig Length (nt)","Strand","Protein Length","Start","End","Acr Homolog","Potential Aca","AcaHMM HIT","Pfam","Complete CRISPR-Cas and STSS", "Operon in Prophage","Protein Sequence"]]
+                            df_allResult=pd.concat([df_allResult,df_outTable])
+                        df_allResult.to_csv(os.path.join(sub_outputfolder_path,"All_Aca_operons.csv"),index=False)
 
                 else:
                     print("%s have %s number of identified Acr homologs, but not in the identified short gene operons, but no Aca candidate"% (self.faa, len(protein_NP_list)))

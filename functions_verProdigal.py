@@ -1,8 +1,5 @@
-# Need to make a seperate function file for prodigal runs and ncbi annotation runs, with only a few functions, not the whole thing!
-
 import subprocess
 import sys
-
 import pandas as pd
 from Bio import SeqIO
 import os
@@ -17,7 +14,7 @@ def get_file_directory_path(file_path):
     return directory_path[0]
 
 def length(list):
-    gene_length=int(list[4])-int(list[3])
+    gene_length=int(list[4])-int(list[3]) + 1
     return gene_length
 
 def contig(list):
@@ -230,18 +227,18 @@ def potential_new_aca_faa_filemake(parsed_hmm_outfile,newAcrAca_faaFile,unhmmer_
             HTH,pfamID,ID=line.rstrip().decode('utf-8').split()
             if ID in unhmmer_aca:
                 # If Aca is not in unhmmer, then it should not be considered as a potential Aca(here is to make sure that condiction "gene distance < 3" is applied)
-                if ID not in Aca_Pro_lst_dic:
+                if ID not in Aca_Pro_lst_dic.keys():
                     Aca_Pro_lst_dic.setdefault(ID,[HTH+"="+pfamID])
-                elif ID in Aca_Pro_lst_dic:
+                    SeqIO.write(record_dict[ID], new, "fasta")
+                elif ID in Aca_Pro_lst_dic.keys():
                     Aca_Pro_lst_dic[ID].append(HTH+"="+pfamID)
-                SeqIO.write(record_dict[ID], new, "fasta")
                 #This is to consider the < than 3 genes condition, which had been implemented before in "faa_file_wrote_diamond_special" function
     return newfile_name,Aca_Pro_lst_dic
 
-def final_result_check_output_generation(Acr_homolog_candidate_list_resultCheck,newfile_name,Aca_Pro_lst_dic):
+def final_result_check_output_generation(Acr_homolog_candidate_list_resultCheck,newfile_name,Aca_Pro_lst_dic,publishedAcaHMM_hits_dic):
     #generation of final result checking file
     #Table will be tsv format
-    #### GCF_number    ProteinID   Contig  Strand  Length  Start   End     Species     Acr     Aca ####
+    #### GCF_number    ProteinID   Contig  Strand  Length  Start   End     Species     Acr     Aca  AcaHMM_HIT ####
     Acr_Aca_loci_by_GBA = []
     for i in Acr_homolog_candidate_list_resultCheck:
         if any(v for v in i if v[0] in Aca_Pro_lst_dic):
@@ -251,12 +248,18 @@ def final_result_check_output_generation(Acr_homolog_candidate_list_resultCheck,
                     v.append("Aca_protein|"+";".join(Aca_Pro_lst_dic[v[0]]))
                 else:
                     v.append("NA")
+                # Check which ProteinID has AcaHMM hits
+                if v[0] in publishedAcaHMM_hits_dic:
+                    v.append(";".join(publishedAcaHMM_hits_dic[v[0]]))
+                else:
+                    v.append("NA")
             Acr_Aca_loci_by_GBA.append(i)
 
     with open(newfile_name, "w") as newfile:
         for pro in Acr_Aca_loci_by_GBA:
             for value in pro:
-                for info in value: newfile.write("%s\t" % str(info))
+                # for info in value: newfile.write("%s\t" % str(info))
+                newfile.write("\t".join([str(v) for v in value]))
                 newfile.write("\n")
 
 def pos_rearrange(pos_list):
@@ -356,10 +359,14 @@ def find_prophage(fna,outputdir,threads):
                 else:
                     phage_pos_end_dic[contig_key].append(positions_start_end[1])
         phage_locations=[]
+        prophage_out_table = os.path.join(outputdir, "prophage_locations.csv")
+        newfile = open(prophage_out_table, "w")
+        newfile.write(",".join(["Contig", "Start", "End"]) + "\n")
         for key in phage_pos_start_dic:
-            pos_start = max(phage_pos_start_dic[key])
-            pos_end = min(phage_pos_end_dic[key])
+            pos_end = max(phage_pos_start_dic[key])
+            pos_start = min(phage_pos_end_dic[key])
             phage_locations.append(key.split("|")[0] + ":" + str(pos_start) + "-" + str(pos_end)) # Contig:startPos-endPos
+            newfile.write(",".join([key.split("|")[0], str(pos_start), str(pos_end)]) + "\n")
         return phage_locations
     else:
         print("No prophage found in sequence")
@@ -387,3 +394,64 @@ def pfamScan_run(operon_faa_file, pfam_hmm_dir,threads,HTH_alignment_evalue):
         if len(info_list)>0:
             dic_pfam.setdefault(record.id,";".join(info_list))
     return dic_pfam
+
+def Aca_HMM_search(aca_candidate_file,published_acaHMM,threads,hmm_outfile,evalue_cut_off,outdir,coverage_cutoff,fna_file):
+    fna_dic = SeqIO.to_dict(SeqIO.parse(fna_file, "fasta"))
+    subprocess.Popen(
+        ['hmmsearch', '--domtblout', hmm_outfile, '-o', os.path.join(outdir, 'log_aca.hmm'), '--noali', "--cpu", threads,
+         '-E', evalue_cut_off, published_acaHMM, aca_candidate_file]).wait() # add coverage
+    AcaPub_Pro_lst_dic={}
+    faa_dic=SeqIO.to_dict(SeqIO.parse(aca_candidate_file,"fasta"))
+    df=pd.DataFrame()
+    contig_list=[]
+    wpid_list=[]
+    start_list=[]
+    end_list=[]
+    strand_list=[]
+    contig_length_list = []
+    hmm_ID_list = []
+    hmm_coverage_list=[]
+    evalue_list=[]
+    for line in open(hmm_outfile).readlines():
+        line = line.split()
+        if "#" not in line[0]:
+            ID = line[0]
+            aca = line[3]
+            coverage = (int(line[18]) - int(line[17]) + 1) / int(line[2])
+            if coverage > coverage_cutoff: #Coverage filter
+                ## modified for prodigal ##
+                info_from_gff=[v.strip() for v in faa_dic[ID].description.split("#")]
+                contig_list.append("_".join(info_from_gff[0].split("_")[0:2]))
+                wpid_list.append(ID)
+                start_list.append(info_from_gff[1])
+                end_list.append(info_from_gff[2])
+                if int(info_from_gff[3]) < 0:
+                    strand_list.append("-")
+                else:
+                    strand_list.append("+")
+                contig_length_list.append(len(fna_dic[info_from_gff[0]].seq))
+                hmm_ID_list.append(aca)
+                ## modified for prodigal ##
+                hmm_coverage_list.append(str(coverage))
+                evalue_list.append(line[6])
+
+                if ID not in AcaPub_Pro_lst_dic:
+                    AcaPub_Pro_lst_dic.setdefault(ID, [aca])
+                elif ID in AcaPub_Pro_lst_dic:
+                    AcaPub_Pro_lst_dic[ID].append(aca)
+    if len(AcaPub_Pro_lst_dic) > 0:
+        aca_fasta_file = open(os.path.join(outdir, "Aca-like_protein.faa"), "w")
+        for key in AcaPub_Pro_lst_dic.keys():
+            SeqIO.write(faa_dic[key],aca_fasta_file,"fasta")
+        df["Contig"]=contig_list
+        df["Protein ID"]=wpid_list
+        df["Start Location"]= start_list
+        df["End Location"]= end_list
+        df["Strand"] = strand_list
+        df["Contig Length (nt)"] = contig_length_list
+        df["Aca HMM ID"]=hmm_ID_list
+        df["Aca-like Protein Coverage"]=hmm_coverage_list
+        df["Aca HMM Evalue"]=evalue_list
+        df.to_csv(os.path.join(outdir, 'Aca-like_protein.csv'),index=False)
+
+    return AcaPub_Pro_lst_dic
