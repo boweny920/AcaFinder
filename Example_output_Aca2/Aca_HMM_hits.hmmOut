@@ -1,0 +1,20 @@
+#                                                                            --- full sequence --- -------------- this domain -------------   hmm coord   ali coord   env coord
+# target name        accession   tlen query name           accession   qlen   E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
+#------------------- ---------- ----- -------------------- ---------- ----- --------- ------ ----- --- --- --------- --------- ------ ----- ----- ----- ----- ----- ----- ----- ---- ---------------------
+WP_019933884.1       -            207 aca12                -            135     3e-13   47.8   0.0   1   1   1.4e-16   4.4e-13   47.3   0.0     5    65     6    67     2    81 0.90 LexA family transcriptional regulator [Oceanimonas smirnovii]
+WP_019933869.1       -            125 aca2                 -            170   1.9e-29   99.9   0.3   1   1   1.4e-32   2.2e-29   99.7   0.3    32   137     1   112     1   119 0.93 DUF1870 family protein [Oceanimonas smirnovii]
+WP_019933884.1       -            207 aca2                 -            170   3.4e-12   43.8   0.0   1   1     3e-15   4.6e-12   43.3   0.0    31    93     2    63     1    78 0.87 LexA family transcriptional regulator [Oceanimonas smirnovii]
+WP_019933884.1       -            207 aca3                 -            256   2.6e-12   44.8   0.0   1   1   1.1e-15   3.4e-12   44.5   0.0   112   166     5    59     1    87 0.83 LexA family transcriptional regulator [Oceanimonas smirnovii]
+WP_019933884.1       -            207 aca5                 -            224   1.4e-11   42.3   0.0   1   1     6e-15   1.9e-11   41.9   0.0    82   141     4    60     1    99 0.79 LexA family transcriptional regulator [Oceanimonas smirnovii]
+WP_019933884.1       -            207 aca6                 -            230   2.7e-13   47.8   0.0   1   1     1e-16   3.2e-13   47.5   0.0    96   155     5    71     1   113 0.83 LexA family transcriptional regulator [Oceanimonas smirnovii]
+WP_019933884.1       -            207 aca9                 -            190   5.9e-12   43.4   0.0   1   1   2.3e-15   7.1e-12   43.1   0.0    62   122     1    63     1   117 0.85 LexA family transcriptional regulator [Oceanimonas smirnovii]
+#
+# Program:         hmmsearch
+# Version:         3.3.2 (Nov 2020)
+# Pipeline mode:   SEARCH
+# Query file:      HMM/published_13_Aca.hmm
+# Target file:     ../Performance_Test/Genomes_of_AcaPublished/GCF_000381965.1_ASM38196v1/GCF_000381965.1_ASM38196v1_protein.faa
+# Option settings: hmmsearch -o ../Example_output_Aca2/log_aca.hmm --domtblout ../Example_output_Aca2/Aca_HMM_hits.hmmOut --noali -E 1e-10 --cpu 2 HMM/published_13_Aca.hmm ../Performance_Test/Genomes_of_AcaPublished/GCF_000381965.1_ASM38196v1/GCF_000381965.1_ASM38196v1_protein.faa 
+# Current dir:     /mnt/array1/bowen/AcaFinder_project/AcaFinder_Ver4
+# Date:            Thu May 12 11:24:15 2022
+# [ok]

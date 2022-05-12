@@ -1,0 +1,70 @@
+# hmmscan :: search sequence(s) against a profile database
+# HMMER 3.3.2 (Nov 2020); http://hmmer.org/
+# Copyright (C) 2020 Howard Hughes Medical Institute.
+# Freely distributed under the BSD open source license.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query sequence file:             ../Example_output_Aca2/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-6.faa
+# target HMM database:             HMM/Pfam-A.clan_HTH_le150bp.hmm
+# output directed to file:         ../Example_output_Aca2/log.hmm
+# per-dom hits tabular output:     ../Example_output_Aca2/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-6.faa.hmmout
+# show alignments in output:       no
+# profile reporting threshold:     E-value <= 0.001
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       WP_019935836.1  [L=198]
+Description: sulfoxide reductase heme-binding subunit YedZ [Oceanimonas smirnovii]
+Scores for complete sequence (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Model    Description
+    ------- ------ -----    ------- ------ -----   ---- --  -------- -----------
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Domain annotation for each model:
+
+   [No targets detected that satisfy reporting thresholds]
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query sequence(s):                         1  (198 residues searched)
+Target model(s):                         328  (26307 nodes)
+Passed MSV filter:                         7  (0.0213415); expected 6.6 (0.02)
+Passed bias filter:                        2  (0.00609756); expected 6.6 (0.02)
+Passed Vit filter:                         0  (0); expected 0.3 (0.001)
+Passed Fwd filter:                         0  (0); expected 0.0 (1e-05)
+Initial search space (Z):                328  [actual number of targets]
+Domain search space  (domZ):               0  [number of targets reported over threshold]
+# CPU time: 0.01u 0.01s 00:00:00.02 Elapsed: 00:00:00.02
+# Mc/sec: 186.97
+//
+Query:       WP_019935837.1  [L=153]
+Description: hypothetical protein [Oceanimonas smirnovii]
+Scores for complete sequence (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Model    Description
+    ------- ------ -----    ------- ------ -----   ---- --  -------- -----------
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Domain annotation for each model:
+
+   [No targets detected that satisfy reporting thresholds]
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query sequence(s):                         1  (153 residues searched)
+Target model(s):                         328  (26307 nodes)
+Passed MSV filter:                         6  (0.0182927); expected 6.6 (0.02)
+Passed bias filter:                        6  (0.0182927); expected 6.6 (0.02)
+Passed Vit filter:                         0  (0); expected 0.3 (0.001)
+Passed Fwd filter:                         0  (0); expected 0.0 (1e-05)
+Initial search space (Z):                328  [actual number of targets]
+Domain search space  (domZ):               0  [number of targets reported over threshold]
+# CPU time: 0.01u 0.00s 00:00:00.01 Elapsed: 00:00:00.05
+# Mc/sec: 80.09
+//
+[ok]

@@ -1,0 +1,6 @@
+KEGG Entry	Metabolism	Pathway	Total AMGs	Present AMG KOs
+map00620	Carbohydrate metabolism	Pyruvate metabolism	1	K01649
+map00230	Nucleotide metabolism	Purine metabolism	1	K01951
+map00290	Amino acid metabolism	"Valine, leucine and isoleucine biosynthesis"	1	K01649
+map00983	Xenobiotics biodegradation and metabolism	Drug metabolism - other enzymes	1	K01951
+map04122	"Folding, sorting and degradation"	Sulfur relay system	1	K21140
