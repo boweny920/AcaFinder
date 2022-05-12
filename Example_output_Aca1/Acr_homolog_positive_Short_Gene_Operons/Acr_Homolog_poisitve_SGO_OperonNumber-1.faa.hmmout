@@ -1,0 +1,25 @@
+#                                                                            --- full sequence --- -------------- this domain -------------   hmm coord   ali coord   env coord
+# target name        accession   tlen query name           accession   qlen   E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
+#------------------- ---------- ----- -------------------- ---------- ----- --------- ------ ----- --- --- --------- --------- ------ ----- ----- ----- ----- ----- ----- ----- ---- ---------------------
+HTH_3                PF01381.25    55 YP_007392318.1       -            137   2.6e-05   18.6   0.1   1   1   5.9e-07   6.5e-05   17.3   0.1    11    41    29    58    28    60 0.91 Helix-turn-helix
+HTH_31               PF13560.9     64 YP_007392318.1       -            137   5.2e-05   17.9   0.3   1   1   9.5e-07    0.0001   17.0   0.3    14    48    27    66    12    72 0.78 Helix-turn-helix domain
+HTH_23               PF13384.9     50 YP_007392318.1       -            137   5.9e-05   17.3   0.5   1   2   1.7e-06   0.00018   15.7   0.1    13    39    21    49    17    63 0.83 Homeodomain-like domain
+HTH_23               PF13384.9     50 YP_007392318.1       -            137   5.9e-05   17.3   0.5   2   2      0.53        58   -1.8   0.0    19    33   102   116   100   117 0.82 Homeodomain-like domain
+Mor                  PF08765.14   108 YP_007392328.1       -            149   1.3e-16   54.9   0.0   1   1   5.4e-19   1.8e-16   54.5   0.0     4    96    35   137    17   146 0.92 Mor transcription activator family
+Cdh1_DBD_1           PF18196.4    120 YP_007392333.1       -            133   0.00091   13.9   1.1   1   1   3.5e-06    0.0012   13.6   1.1    39    99    39    99    30   117 0.89 Chromodomain helicase DNA-binding domain 1
+HTH_28               PF13518.9     52 YP_007392336.1       -            166   9.4e-08   26.5   0.3   1   1   4.4e-09   2.9e-07   25.0   0.3    10    42    17    49     9    55 0.88 Helix-turn-helix domain
+HTH_23               PF13384.9     50 YP_007392336.1       -            166   8.3e-07   23.2   0.3   1   2   4.3e-08   2.8e-06   21.5   0.1    16    46    16    48     9    49 0.83 Homeodomain-like domain
+HTH_23               PF13384.9     50 YP_007392336.1       -            166   8.3e-07   23.2   0.3   2   2       1.6   1.1e+02   -2.6   0.0     7    26    52    70    51    71 0.67 Homeodomain-like domain
+HTH_29               PF13551.9     63 YP_007392336.1       -            166   1.6e-05   19.3   0.0   1   1   4.9e-07   3.2e-05   18.3   0.0    15    42    22    51    16    63 0.85 Winged helix-turn helix
+Sigma70_r4           PF04545.19    50 YP_007392336.1       -            166   0.00067   13.5   0.0   1   1   2.5e-05    0.0016   12.3   0.0     8    44     6    43     4    44 0.90 Sigma-70, region 4
+Sigma70_r4_2         PF08281.15    54 YP_007392336.1       -            166   0.00073   13.6   0.1   1   1   2.4e-05    0.0015   12.6   0.1    12    51     4    44     4    46 0.91 Sigma-70, region 4
+#
+# Program:         hmmscan
+# Version:         3.3.2 (Nov 2020)
+# Pipeline mode:   SCAN
+# Query file:      ../Example_output_Aca1/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-1.faa
+# Target file:     HMM/Pfam-A.clan_HTH_le150bp.hmm
+# Option settings: hmmscan -o ../Example_output_Aca1/log.hmm --domtblout ../Example_output_Aca1/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-1.faa.hmmout --noali -E 1e-3 --cpu 2 HMM/Pfam-A.clan_HTH_le150bp.hmm ../Example_output_Aca1/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-1.faa 
+# Current dir:     /mnt/array1/bowen/AcaFinder_project/AcaFinder_Ver4
+# Date:            Wed May 11 20:00:22 2022
+# [ok]

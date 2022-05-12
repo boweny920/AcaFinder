@@ -1,0 +1,17 @@
+#                                                               --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name        accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_1 -          K01356               -            4.8e-17   54.0   0.0   5.7e-17   53.8   0.0   1.1   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_7 -          K07132               -            1.4e-35  115.0   0.0   1.7e-35  114.7   0.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_6 -          K07497               -            3.7e-19   61.2   3.8   5.2e-19   60.7   3.8   1.2   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_2 -          K07724               -            6.3e-24   76.3   1.3   7.2e-24   76.1   1.3   1.0   1   0   0   1   1   1   1 -
+#
+# Program:         hmmsearch
+# Version:         3.3.2 (Nov 2020)
+# Pipeline mode:   SEARCH
+# Query file:      /mnt/array1/bowen/anaconda3/envs/AcaFinder/share/vibrant-1.2.0/databases/KEGG_profiles_prokaryotes.HMM
+# Target file:     ../Example_output_Aca1/GCF_000904095.1_ViralProj188536_genomic.parallel-runs_aa.appended.faa
+# Option settings: hmmsearch -o ../Example_output_Aca1/GCF_000904095.1_ViralProj188536_genomic.parallel-runs_aa_temp.txt --tblout ../Example_output_Aca1/GCF_000904095.1_ViralProj188536_genomic.parallel-runs_aa.KEGG.hmmtbl --noali -T 40 --cpu 0 /mnt/array1/bowen/anaconda3/envs/AcaFinder/share/vibrant-1.2.0/databases/KEGG_profiles_prokaryotes.HMM ../Example_output_Aca1/GCF_000904095.1_ViralProj188536_genomic.parallel-runs_aa.appended.faa 
+# Current dir:     /mnt/array1/bowen/AcaFinder_project/AcaFinder_Ver4
+# Date:            Wed May 11 20:01:46 2022
+# [ok]

@@ -1,0 +1,27 @@
+input:	../Performance_Test/Genomes_of_AcaPublished/GCF_000904095.1_ViralProj188536/GCF_000904095.1_ViralProj188536_genomic.fna
+output:	../Example_output_Aca1/CRISPR_Cas_Found
+threads:	2
+prodigal:	meta
+circular:	False
+keep_tmp:	False
+log_lvl:	INFO
+redo_typing:	False
+simplelog:	False
+db:	
+dist:	3
+overall_eval:	0.01
+overall_cov_seq:	0.3
+overall_cov_hmm:	0.3
+ccd:	10000
+pred_prob:	0.75
+kmer:	4
+repeat_id:	70
+spacer_id:	55
+spacer_sem:	3.5
+exact_stats:	False
+seed:	42
+skip_blast:	False
+expand:	0
+custom_hmm:	
+no_plot:	True
+no_grid:	False

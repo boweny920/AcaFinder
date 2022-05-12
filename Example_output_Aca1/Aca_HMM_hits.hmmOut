@@ -1,0 +1,14 @@
+#                                                                            --- full sequence --- -------------- this domain -------------   hmm coord   ali coord   env coord
+# target name        accession   tlen query name           accession   qlen   E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
+#------------------- ---------- ----- -------------------- ---------- ----- --------- ------ ----- --- --- --------- --------- ------ ----- ----- ----- ----- ----- ----- ----- ---- ---------------------
+YP_007392343.1       -             79 aca1                 -            215   1.1e-34  112.0   0.0   1   1   2.1e-36   1.2e-34  111.9   0.0    70   139     5    78     3    79 0.94 hypothetical protein JBD30_036 [Pseudomonas phage JBD30]
+#
+# Program:         hmmsearch
+# Version:         3.3.2 (Nov 2020)
+# Pipeline mode:   SEARCH
+# Query file:      HMM/published_13_Aca.hmm
+# Target file:     ../Performance_Test/Genomes_of_AcaPublished/GCF_000904095.1_ViralProj188536/GCF_000904095.1_ViralProj188536_protein.faa
+# Option settings: hmmsearch -o ../Example_output_Aca1/log_aca.hmm --domtblout ../Example_output_Aca1/Aca_HMM_hits.hmmOut --noali -E 1e-10 --cpu 2 HMM/published_13_Aca.hmm ../Performance_Test/Genomes_of_AcaPublished/GCF_000904095.1_ViralProj188536/GCF_000904095.1_ViralProj188536_protein.faa 
+# Current dir:     /mnt/array1/bowen/AcaFinder_project/AcaFinder_Ver4
+# Date:            Wed May 11 20:00:21 2022
+# [ok]

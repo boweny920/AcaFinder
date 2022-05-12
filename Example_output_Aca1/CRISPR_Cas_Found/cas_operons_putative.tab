@@ -1,0 +1,2 @@
+Contig	Operon	Start	End	Prediction	Complete_Interference	Complete_Adaptation	Best_type	Best_score	Genes	Positions	E-values	CoverageSeq	CoverageHMM	Strand_Interference	Strand_Adaptation
+NC_020198.1	NC_020198.1@1	2590	5426	False	50%	NA	V-K	2.0	['TnsB_0_V-K', 'TnsC_0_V-K']	[6, 7]	['2.30e-06', '1.90e-08']	[0.3, 0.43]	[0.361, 0.392]	1	NA

@@ -1,0 +1,2 @@
+scaffold	total genes	all KEGG	KEGG v-score	all Pfam	Pfam v-score	all VOG	VOG v-score	KEGG int-rep	KEGG zero	Pfam int-rep	Pfam zero	VOG redoxin	VOG rec-tran	VOG int	VOG RnR	VOG DNA	KEGG restriction check	KEGG toxin check	VOG special	annotation check	p_v check	p_k check	k_v check	k check	p check	v check	h check
+NC_020198.1 Pseudomonas phage JBD30, complete genome	55.0	4.0	3.7300000000000004	15.0	10.639999999999999	54.0	100.94000000000001	2.0	0.0	1.0	0.0	0.0	1.0	0.0	0.0	2.0	0.0	0.0	3.0	3.0	11.0	1.0	0.0	0.0	0.0	40.0	0.0

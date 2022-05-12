@@ -1,0 +1,72 @@
+#                                                               --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name        accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_36 -          VOG00373             -              1e-77  254.0   3.3   1.2e-77  253.9   3.3   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_44 -          VOG00543             -            1.3e-74  242.2   0.1   1.4e-74  242.1   0.1   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_30 -          VOG00677             -            2.9e-75  245.5   0.0   3.8e-75  245.1   0.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_32 -          VOG00686             -            5.9e-18   57.5   0.1   8.8e-18   56.9   0.1   1.2   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_33 -          VOG00721             -              2e-33  107.6   0.1   2.2e-33  107.5   0.1   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_24 -          VOG00741             -            1.3e-50  164.5   0.1   1.4e-50  164.4   0.1   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_6 -          VOG00758             -           2.6e-181  596.6   0.1  3.1e-181  596.4   0.1   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_21 -          VOG00774             -            3.9e-45  144.8   0.0   4.5e-45  144.6   0.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_46 -          VOG00916             -              2e-75  246.1   1.2   2.3e-75  245.8   1.2   1.1   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_47 -          VOG00916             -            3.8e-61  199.1   8.3   4.2e-61  199.0   8.3   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_1 -          VOG00934             -            2.2e-14   45.0   0.0   2.7e-14   44.7   0.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_49 -          VOG01362             -              6e-75  244.0   0.0   6.6e-75  243.9   0.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_7 -          VOG01384             -            2.1e-73  239.2   0.0   2.3e-73  239.0   0.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_43 -          VOG01417             -            5.1e-60  194.9   0.0   5.6e-60  194.8   0.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_16 -          VOG01533             -            4.9e-61  197.4   0.1   5.4e-61  197.3   0.1   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_17 -          VOG01533             -            9.5e-45  144.4   0.2     1e-44  144.3   0.2   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_53 -          VOG01595             -           1.6e-108  353.9  20.4    2e-108  353.6  20.4   1.1   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_23 -          VOG01722             -            2.2e-59  191.1   0.8   2.5e-59  190.9   0.8   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_31 -          VOG01729             -           1.8e-103  338.9   0.0  2.2e-103  338.6   0.0   1.1   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_51 -          VOG01785             -            1.2e-27   87.6   0.1   1.3e-27   87.5   0.1   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_40 -          VOG01842             -              4e-37  119.3   0.0   4.4e-37  119.2   0.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_8 -          VOG02078             -            6.6e-94  304.9   0.2   7.6e-94  304.7   0.2   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_32 -          VOG02590             -            9.3e-25   79.3   1.6   2.3e-24   78.0   1.6   1.6   1   1   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_11 -          VOG02635             -            9.8e-46  146.7   1.3   1.2e-45  146.4   1.3   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_1 -          VOG02771             -            7.5e-22   70.3   0.0     9e-22   70.0   0.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_32 -          VOG02806             -           9.6e-132  432.2   2.8  1.1e-131  432.0   2.8   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_13 -          VOG02851             -            2.3e-89  289.2   0.1   2.5e-89  289.1   0.1   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_48 -          VOG03173             -           7.1e-166  544.2   0.3  8.5e-166  543.9   0.3   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_20 -          VOG03188             -            1.2e-46  150.3   2.1   1.4e-46  150.2   2.1   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_3 -          VOG03327             -              5e-63  203.5   0.2   5.5e-63  203.4   0.2   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_35 -          VOG04596             -            7.4e-52  165.4   0.3     8e-52  165.3   0.3   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_29 -          VOG04918             -            3.9e-75  242.8   0.1   4.6e-75  242.5   0.1   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_52 -          VOG09893             -           1.2e-249  822.1   0.0  1.5e-249  821.8   0.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_50 -          VOG09894             -            8.3e-34  107.1   0.4   9.1e-34  106.9   0.4   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_41 -          VOG10943             -            1.7e-54  175.5   0.0   1.9e-54  175.3   0.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_6 -          VOG11291             -            1.1e-14   46.3   0.0     2e-14   45.5   0.0   1.4   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_37 -          VOG11303             -           3.7e-143  467.9   0.0  4.4e-143  467.7   0.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_4 -          VOG11432             -            5.4e-73  234.3  12.4     6e-73  234.1  12.4   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_5 -          VOG11433             -            6.6e-86  277.1   6.1   7.4e-86  277.0   6.1   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_9 -          VOG11434             -              1e-99  323.9   6.6   1.1e-99  323.7   6.6   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_12 -          VOG11435             -              3e-47  151.2   0.1   3.3e-47  151.1   0.1   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_15 -          VOG11436             -            4.1e-70  224.3   0.7   4.5e-70  224.1   0.7   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_18 -          VOG11437             -            1.1e-58  187.3   0.2   1.2e-58  187.2   0.2   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_19 -          VOG11438             -              6e-61  194.9   6.3   6.6e-61  194.8   6.3   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_26 -          VOG11439             -            1.6e-87  282.3  14.0   1.8e-87  282.1  14.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_27 -          VOG11440             -            8.9e-49  154.9   1.0   9.8e-49  154.8   1.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_28 -          VOG11441             -            1.3e-78  254.3   1.3   1.4e-78  254.2   1.3   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_38 -          VOG11445             -            2.6e-65  210.0   3.8   2.9e-65  209.8   3.8   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_39 -          VOG11446             -            4.5e-35  111.6  12.6   4.8e-35  111.5  12.6   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_42 -          VOG11447             -            1.9e-31   99.7   1.1     2e-31   99.5   1.1   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_54 -          VOG11448             -            1.4e-37  120.1   0.0   1.5e-37  120.0   0.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_55 -          VOG12212             -              4e-53  169.9   5.9   4.4e-53  169.8   5.9   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_10 -          VOG13918             -              2e-29   93.4  11.2   2.2e-29   93.3  11.2   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_22 -          VOG13919             -            2.2e-80  258.2   6.4   2.4e-80  258.0   6.4   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_34 -          VOG13920             -            4.9e-60  191.6   0.4   5.4e-60  191.4   0.4   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_5 -          VOG19629             -            4.3e-21   67.3   0.0     7e-21   66.7   0.0   1.3   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_14 -          VOG20057             -            5.8e-52  165.3   1.8   6.4e-52  165.2   1.8   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_25 -          VOG20560             -              3e-32  102.1   6.0   3.2e-32  102.0   6.0   1.0   1   0   0   1   1   1   1 -
+NC_020198.1$~&Pseudomonas$~&phage$~&JBD30,$~&complete$~&genome_45 -          VOG22128             -           4.5e-119  390.5  42.9  4.5e-119  390.5  42.9   4.2   2   2   1   4   4   4   2 -
+#
+# Program:         hmmsearch
+# Version:         3.3.2 (Nov 2020)
+# Pipeline mode:   SEARCH
+# Query file:      /mnt/array1/bowen/anaconda3/envs/AcaFinder/share/vibrant-1.2.0/databases/VOGDB94_phage.HMM
+# Target file:     ../Example_output_Aca1/GCF_000904095.1_ViralProj188536_genomic.parallel-runs_aa.pass.faa
+# Option settings: hmmsearch -o ../Example_output_Aca1/GCF_000904095.1_ViralProj188536_genomic.parallel-runs_aa_temp.txt --tblout ../Example_output_Aca1/GCF_000904095.1_ViralProj188536_genomic.parallel-runs_aa.VOG.hmmtbl --noali -T 40 --cpu 0 /mnt/array1/bowen/anaconda3/envs/AcaFinder/share/vibrant-1.2.0/databases/VOGDB94_phage.HMM ../Example_output_Aca1/GCF_000904095.1_ViralProj188536_genomic.parallel-runs_aa.pass.faa 
+# Current dir:     /mnt/array1/bowen/AcaFinder_project/AcaFinder_Ver4
+# Date:            Wed May 11 20:02:30 2022
+# [ok]
