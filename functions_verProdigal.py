@@ -417,7 +417,7 @@ def Aca_HMM_search(aca_candidate_file,published_acaHMM,threads,hmm_outfile,evalu
         if "#" not in line[0]:
             ID = line[0]
             aca = line[3]
-            coverage = (int(line[18]) - int(line[17]) + 1) / int(line[2])
+            coverage=(int(line[16]) - int(line[15]) + 1) / int(line[5]) #hmm coverage
             if coverage > coverage_cutoff: #Coverage filter
                 ## modified for prodigal ##
                 info_from_gff=[v.strip() for v in faa_dic[ID].description.split("#")]
