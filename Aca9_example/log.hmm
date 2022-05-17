@@ -1,0 +1,70 @@
+# hmmscan :: search sequence(s) against a profile database
+# HMMER 3.3.2 (Nov 2020); http://hmmer.org/
+# Copyright (C) 2020 Howard Hughes Medical Institute.
+# Freely distributed under the BSD open source license.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query sequence file:             ../Performance_Test/AcaFinder_OUT_test3/GCF_004135975.1_ASM413597v1/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-8.faa
+# target HMM database:             HMM/Pfam-A.clan_HTH_le150bp.hmm
+# output directed to file:         ../Performance_Test/AcaFinder_OUT_test3/GCF_004135975.1_ASM413597v1/log.hmm
+# per-dom hits tabular output:     ../Performance_Test/AcaFinder_OUT_test3/GCF_004135975.1_ASM413597v1/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-8.faa.hmmout
+# show alignments in output:       no
+# profile reporting threshold:     E-value <= 0.001
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       WP_129353986.1  [L=81]
+Description: AbrB/MazE/SpoVT family DNA-binding domain-containing protein [Desulfovibrio carbinolicus]
+Scores for complete sequence (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Model    Description
+    ------- ------ -----    ------- ------ -----   ---- --  -------- -----------
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Domain annotation for each model:
+
+   [No targets detected that satisfy reporting thresholds]
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query sequence(s):                         1  (81 residues searched)
+Target model(s):                         328  (26307 nodes)
+Passed MSV filter:                         8  (0.0243902); expected 6.6 (0.02)
+Passed bias filter:                        6  (0.0182927); expected 6.6 (0.02)
+Passed Vit filter:                         1  (0.00304878); expected 0.3 (0.001)
+Passed Fwd filter:                         0  (0); expected 0.0 (1e-05)
+Initial search space (Z):                328  [actual number of targets]
+Domain search space  (domZ):               0  [number of targets reported over threshold]
+# CPU time: 0.00u 0.01s 00:00:00.01 Elapsed: 00:00:00.02
+# Mc/sec: 92.16
+//
+Query:       WP_129353988.1  [L=110]
+Description: type II toxin-antitoxin system PemK/MazF family toxin [Desulfovibrio carbinolicus]
+Scores for complete sequence (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Model    Description
+    ------- ------ -----    ------- ------ -----   ---- --  -------- -----------
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Domain annotation for each model:
+
+   [No targets detected that satisfy reporting thresholds]
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query sequence(s):                         1  (110 residues searched)
+Target model(s):                         328  (26307 nodes)
+Passed MSV filter:                         2  (0.00609756); expected 6.6 (0.02)
+Passed bias filter:                        2  (0.00609756); expected 6.6 (0.02)
+Passed Vit filter:                         0  (0); expected 0.3 (0.001)
+Passed Fwd filter:                         0  (0); expected 0.0 (1e-05)
+Initial search space (Z):                328  [actual number of targets]
+Domain search space  (domZ):               0  [number of targets reported over threshold]
+# CPU time: 0.01u 0.01s 00:00:00.02 Elapsed: 00:00:00.03
+# Mc/sec: 92.43
+//
+[ok]
