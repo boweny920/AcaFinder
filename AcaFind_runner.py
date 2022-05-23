@@ -34,7 +34,7 @@ parser.add_argument('-b','--Acr_Aca_inBetweenGenes', nargs='?', default=4,help="
 parser.add_argument('-w', '--Virus', action='store_true',help="Provide option -w/--Virus if input data is of viral origin")
 parser.add_argument('-d','--threads',nargs='?', default="1", help="Number of cpu cores to run the program with")
 parser.add_argument('-z','--phamDir', nargs='?', default="all_pFam_hmm", help="Directory of all pfam hmm files with .dat files and other binaries")
-parser.add_argument('-y','--published_acaHMM', nargs='?', default="HMM/published_13_Aca.hmm",help="HMM for all 13 publsihed Aca proteins, recommended to use the default hmm provided from us")
+parser.add_argument('-y','--published_acaHMM', nargs='?', default="HMM/AcaHMMs",help="HMM for all 13 publsihed Aca proteins, recommended to use the default hmm provided from us")
 parser.add_argument('-x','--acaHMM_evalue', nargs='?', default="1e-10",help="evalue cut-off for acaHMM hummer search, recommended to use default")
 parser.add_argument('-u','--acaHMM_cov', nargs='?', default=0.6,type=float,help="Coverage cut-off for acaHMM hummer search, recommended to use default")
 args=parser.parse_args()
