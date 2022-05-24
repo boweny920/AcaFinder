@@ -314,7 +314,7 @@ def find_complete_CRISPR_Cas_and_SelfTargeting(fna,outputfile,threads,general_fo
             CRCasType = CRISPR_Cas["Prediction"]
             spacer_names = CRISPR_Cas["CRISPRs"].lstrip("[").rstrip("]").replace("'", "").replace(" ", "").split(
                 ",")  # Some CC have multiple spacers, thisis to get all the spacers
-            print("CRISPR-Cas spacers: ")
+            # print("CRISPR-Cas spacers: ")
             ## Look for self-targeting regions in the genome
             self_targeting_regions = []
             CC_contig.append(CRISPR_Cas["Contig"])
@@ -339,6 +339,8 @@ def find_complete_CRISPR_Cas_and_SelfTargeting(fna,outputfile,threads,general_fo
                 spacer_location = "-".join(
                     [df_Crispr_Table[df_Crispr_Table["CRISPR"] == spacer]["Start"].to_string(index=False),
                      df_Crispr_Table[df_Crispr_Table["CRISPR"] == spacer]["End"].to_string(index=False)])
+                CRISPR_spacer_with_cas_locations=str(min([int(q) for q in spacer_location.split("-") + location.split("-")]))+"-"+str(max([int(p) for p in spacer_location.split("-") + location.split("-")]))
+
                 subprocess.Popen(
                     ["blastn", "-query", spacer_fna, "-db", fna_blastdb, "-out", spacer_fna_blastOutfile,
                      "-num_threads",
@@ -347,24 +349,24 @@ def find_complete_CRISPR_Cas_and_SelfTargeting(fna,outputfile,threads,general_fo
                 for index, row in df_blastOUT.iterrows():
                     blast_location = str(row[8]) + "-" + str(row[9])
                     target_contig = str(row[1])
-                    if distance_cal(location, blast_location) > 5000 and target_contig == spacer_contig:
-                        print(target_contig, spacer_contig, distance_cal(location, blast_location))
+                    if distance_cal(CRISPR_spacer_with_cas_locations, blast_location) > 5000 and target_contig == spacer_contig:
+                        # print(spacer + ":" + spacer_location + "=>" + target_contig + ":" + blast_location)
                         self_targeting_regions.append(
-                            spacer + ":" + spacer_location + "=" + target_contig + ":" + blast_location)
+                            spacer + ":" + spacer_location + "=>" + target_contig + ":" + blast_location)
                     elif target_contig != spacer_contig:
-                        print("Spacer above Self-Targets %s, at position: %s " % (target_contig, blast_location))
-                        self_targeting_regions.append(target_contig + ":" + blast_location)
+                        # print(spacer + ":" + spacer_location + "=>" + target_contig + ":" + blast_location)
+                        self_targeting_regions.append(spacer + ":" + spacer_location + "=>" + target_contig + ":" + blast_location)
             if len(self_targeting_regions) > 0:
                 CC_list.append(CRISPR_Cas["Contig"] + "|" + CRCasType + "|" + location + "|" + "STSS=" + "+".join(
-                    self_targeting_regions))
+                    self_targeting_regions)) #This location indicate the Cas operon
                 STSS_region.append("+".join(self_targeting_regions))
             else:
                 CC_list.append(CRISPR_Cas["Contig"] + "|" + CRCasType + "|" + location + "|" + "No_STSS")
                 STSS_region.append("No_STSS")
-            # Contig|CasTyper|Position|STSS_info
+            # Contig|CasTyper|CasPosition|STSS_info
         df_CCtable["Contig"] = CC_contig
         df_CCtable["CRISPR-Cas Type"] = CC_type
-        df_CCtable["CRISPR-Cas Location"] = CC_location
+        # df_CCtable["CRISPR-Cas Location"] = CC_location
         df_CCtable["CRISPR operon and location"] = C_operon_withLocation
         df_CCtable["Cas operon and location"] = Cas_operon_withLocation
         df_CCtable["STSS"] = STSS_region
