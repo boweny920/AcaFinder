@@ -5,6 +5,7 @@ import argparse
 from Annotation import annotation_prodigal
 import os
 import sys
+from Bio import SeqIO
 
 def is_non_zero_file(fpath):
     #Check if file is empty or does not exsit
@@ -47,18 +48,22 @@ if os.path.isdir(args.outputFolder) is not True:
 if (args.FAA_file == None or args.GFF_file == None) and args.FNA_file != None:
     print("No annotations provided, using prodigal to annotate genome :)")
     prodigal_outDir=os.path.join(args.outputFolder,os.path.basename(args.FNA_file)+".prodigalOUT")
-    gff,faa = annotation_prodigal(args.FNA_file, args.mode_prodiagal,prodigal_outDir).run_prodigal()
-    fna=args.FNA_file
+    gff,faa,fna = annotation_prodigal(args.FNA_file, args.mode_prodiagal,prodigal_outDir).run_prodigal()
+
     from AcaFind_process_verProdigal import Aca_Find_process
 
 elif args.FAA_file != None and args.GFF_file != None and args.FNA_file != None:
     gff=args.GFF_file
     faa=args.FAA_file
-    fna=args.FNA_file
+    with open(os.path.join(args.outputFolder, os.path.basename(args.FNA_file)), "w") as newfile:
+        for record in SeqIO.parse(args.FNA_file, "fasta"):
+            record.description = ""
+            SeqIO.write(record, newfile, "fasta")
+    fna=os.path.join(args.outputFolder, os.path.basename(args.FNA_file))
     from AcaFind_process import Aca_Find_process
 
 elif (args.FAA_file is None or args.GFF_file is None) and args.FNA_file == None:
-    sys.exit("##No FNA, GFF and FAA detected##\nPlease provide FNA file or an annotated protein FAA file with an associated GFF file of you sequence of interest.")
+    sys.exit("##No FNA, GFF and FAA detected##\nPlease provide FNA file or FNA with annotated protein FAA file and associated GFF file.")
 
 Aca_Find_process(fna,gff,faa,
                  args.outputFolder, args.Acr_alignment_evalue, args.Acr_alignment_coverage,

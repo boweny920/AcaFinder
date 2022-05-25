@@ -382,12 +382,14 @@ def find_prophage(fna,outputdir,threads):
         phage_pos_end_dic = {}
         for line in subprocess.Popen(["grep", ">", phage_combined], stdout=subprocess.PIPE).stdout:
             line = line.decode('utf-8').rstrip().split()
-            contig = line[0].lstrip(">")
-            fragment = [v for v in line if "fragment" in v]
+            contig = line[0].lstrip(">") # this is actually proID
+            if "fragment" in contig:
+                fragment=[contig.split("fragment_")[-1].split("_")[0]]
+            else: fragment=[]
             positions_start_end = [int(s) for s in
                                    [v.lstrip("(").rstrip(")") for v in line if ".." in v][0].split("..")]
             if len(fragment) > 0:
-                contig_fragment_key = contig + "|" + fragment[0].split("_")[-2]
+                contig_fragment_key = contig.split("_fragment")[0] + "|" + fragment[0]
                 if contig_fragment_key not in phage_pos_start_dic:
                     phage_pos_start_dic.setdefault(contig_fragment_key, [positions_start_end[0]])
                 else:
@@ -397,7 +399,7 @@ def find_prophage(fna,outputdir,threads):
                 else:
                     phage_pos_end_dic[contig_fragment_key].append(positions_start_end[1])
             else:
-                contig_key = contig
+                contig_key = contig.rsplit("_",1)[0]
                 if contig_key not in phage_pos_start_dic:
                     phage_pos_start_dic.setdefault(contig_key, [positions_start_end[0]])
                 else:
@@ -407,8 +409,8 @@ def find_prophage(fna,outputdir,threads):
                 else:
                     phage_pos_end_dic[contig_key].append(positions_start_end[1])
         phage_locations=[]
-        prophage_out_table=os.path.join(outputdir,"prophage_locations.csv")
-        newfile=open(prophage_out_table,"w")
+        prophage_out_table = os.path.join(outputdir, "prophage_locations.csv")
+        newfile = open(prophage_out_table, "w")
         newfile.write(",".join(["Contig","Start","End","Contig Length"])+"\n")
         fna_dic=SeqIO.to_dict(SeqIO.parse(fna,"fasta"))
         for key in phage_pos_start_dic:
