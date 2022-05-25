@@ -106,7 +106,7 @@ class Aca_Find_process:
                 if len(output_checkResult_tables) > 0:
                     if self.Viral_Flag is False:
                         ##check if any complete CRISPR-Cas found, and check for self-targeting locations if any
-                        complete_CRISPR_Cas_systems=find_complete_CRISPR_Cas_and_SelfTargeting(self.fna,os.path.join(sub_outputfolder_path,"CRISPR_Cas_Found"),self.threads) #Name of cctyper output directory is "CRISPR_Cas_Found"
+                        complete_CRISPR_Cas_systems=find_complete_CRISPR_Cas_and_SelfTargeting(self.fna,os.path.join(sub_outputfolder_path,"CRISPR_Cas_Found"),self.threads,sub_outputfolder_path) #Name of cctyper output directory is "CRISPR_Cas_Found"
                         # [Contig|CasTyper|Position|self-targeting regions,...]/None
                         prophage_regions=find_prophage(self.fna,sub_outputfolder_path,self.threads)
                         # [Contig:startPos-endPos,...]/None

@@ -280,7 +280,7 @@ def distance_cal(pos1,pos2):
     if pos2[1]<pos1[0]:return pos1[0]-pos2[1]
     else: return 0
 
-def find_complete_CRISPR_Cas_and_SelfTargeting(fna,outputfile,threads):
+def find_complete_CRISPR_Cas_and_SelfTargeting(fna,outputfile,threads,general_folder):
     subprocess.Popen(["cctyper",fna,outputfile,"--no_plot","-t",threads,"--prodigal","meta"]).wait()
     CRISPR_CasTable = subprocess.run(["find", outputfile, "-name", "CRISPR_Cas.tab"], stdout=subprocess.PIPE).stdout.decode('utf-8').rstrip()
     if CRISPR_CasTable == "":
@@ -288,41 +288,90 @@ def find_complete_CRISPR_Cas_and_SelfTargeting(fna,outputfile,threads):
         return None
     else:
         print("Complete CRISPR-Cas found and can be found in %s"%CRISPR_CasTable)
+        CasTable = subprocess.run(["find", outputfile, "-name", "cas_operons.tab"],
+                                  stdout=subprocess.PIPE).stdout.decode(
+            'utf-8').rstrip()
+        Crispr_Table = subprocess.run(["find", outputfile, "-name", "crisprs_near_cas.tab"],
+                                      stdout=subprocess.PIPE).stdout.decode('utf-8').rstrip()
+        df_CasTable = pd.read_csv(CasTable, sep="\t")
+        df_Crispr_Table = pd.read_csv(Crispr_Table, sep="\t")
+        fna_dic = SeqIO.to_dict(SeqIO.parse(fna, "fasta"))
+
         df_CRISPRcas = pd.read_csv(CRISPR_CasTable, sep="\t")
         CC_list = []
-        fna_blastdb=os.path.join(outputfile, os.path.basename(fna) + ".blastDB")
+        fna_blastdb = os.path.join(outputfile, os.path.basename(fna) + ".blastDB")
         subprocess.Popen(["makeblastdb", "-dbtype", "nucl", "-in", fna, "-out", fna_blastdb]).wait()
-
+        df_CCtable = pd.DataFrame()
+        CC_contig = []
+        CC_location = []
+        C_operon_withLocation = []
+        CC_type = []
+        Cas_operon_withLocation = []
+        STSS_region = []
+        contig_length = []
         for index, CRISPR_Cas in df_CRISPRcas.iterrows():
             location = "-".join(CRISPR_Cas["Operon_Pos"].lstrip("[").rstrip("]").replace(" ", "").split(","))
             CRCasType = CRISPR_Cas["Prediction"]
-            spacer_names=CRISPR_Cas["CRISPRs"].lstrip("[").rstrip("]").replace("'", "").replace(" ", "").split(",") #Some CC have multiple spacers, thisis to get all the spacers
-            print("CRISPR-Cas spacers: ")
+            spacer_names = CRISPR_Cas["CRISPRs"].lstrip("[").rstrip("]").replace("'", "").replace(" ", "").split(
+                ",")  # Some CC have multiple spacers, thisis to get all the spacers
+            # print("CRISPR-Cas spacers: ")
             ## Look for self-targeting regions in the genome
             self_targeting_regions = []
+            CC_contig.append(CRISPR_Cas["Contig"])
+            CC_type.append(CRCasType)
+            CC_location.append(location)
+            tmp_list = []
             for spacer in spacer_names:
-                spacer_fna=subprocess.run(["find", outputfile, "-name", spacer+".fa"], stdout=subprocess.PIPE).stdout.decode('utf-8').rstrip()
-                print(spacer_fna)
-                spacer_fna_blastOutfile=os.path.join(outputfile, os.path.basename(fna) + "_VS_"+spacer+".blastnOUT")
-                spacer_contig=CRISPR_Cas["Contig"]
-                subprocess.Popen(["blastn","-query",spacer_fna,"-db",fna_blastdb,"-out", spacer_fna_blastOutfile, "-num_threads", str(threads),"-outfmt","6"]).wait()
-                df_blastOUT=pd.read_csv(spacer_fna_blastOutfile,header=None,sep="\t")
-                for index,row in df_blastOUT.iterrows():
-                    blast_location=str(row[8])+"-"+str(row[9])
-                    target_contig=str(row[1])
-                    if distance_cal(location,blast_location) > 3000 and target_contig==spacer_contig:
-                        print(target_contig,spacer_contig,distance_cal(location,blast_location))
-                        self_targeting_regions.append(target_contig + ":" + blast_location)
+                tmp_list.append(spacer + "|" + "-".join(
+                    [df_Crispr_Table[df_Crispr_Table["CRISPR"] == spacer]["Start"].to_string(index=False),
+                     df_Crispr_Table[df_Crispr_Table["CRISPR"] == spacer]["End"].to_string(index=False)]))
+            C_operon_withLocation.append(";".join(tmp_list))
+            Cas_operon_withLocation.append(CRISPR_Cas["Operon"] + "|" + "-".join(
+                [df_CasTable[df_CasTable["Operon"] == CRISPR_Cas["Operon"]]["Start"].to_string(index=False),
+                 df_CasTable[df_CasTable["Operon"] == CRISPR_Cas["Operon"]]["End"].to_string(index=False)]))
+            contig_length.append(len(fna_dic[CRISPR_Cas["Contig"]].seq))
+            for spacer in spacer_names:
+                spacer_fna = subprocess.run(["find", outputfile, "-name", spacer + ".fa"],
+                                            stdout=subprocess.PIPE).stdout.decode('utf-8').rstrip()
+                spacer_fna_blastOutfile = os.path.join(outputfile,
+                                                       os.path.basename(fna) + "_VS_" + spacer + ".blastnOUT")
+                spacer_contig = CRISPR_Cas["Contig"]
+                spacer_location = "-".join(
+                    [df_Crispr_Table[df_Crispr_Table["CRISPR"] == spacer]["Start"].to_string(index=False),
+                     df_Crispr_Table[df_Crispr_Table["CRISPR"] == spacer]["End"].to_string(index=False)])
+                CRISPR_spacer_with_cas_locations=str(min([int(q) for q in spacer_location.split("-") + location.split("-")]))+"-"+str(max([int(p) for p in spacer_location.split("-") + location.split("-")]))
+
+                subprocess.Popen(
+                    ["blastn", "-query", spacer_fna, "-db", fna_blastdb, "-out", spacer_fna_blastOutfile,
+                     "-num_threads",
+                     str(threads), "-outfmt", "6"]).wait()
+                df_blastOUT = pd.read_csv(spacer_fna_blastOutfile, header=None, sep="\t")
+                for index, row in df_blastOUT.iterrows():
+                    blast_location = str(row[8]) + "-" + str(row[9])
+                    target_contig = str(row[1])
+                    if distance_cal(CRISPR_spacer_with_cas_locations, blast_location) > 5000 and target_contig == spacer_contig:
+                        # print(spacer + ":" + spacer_location + "=>" + target_contig + ":" + blast_location)
+                        self_targeting_regions.append(
+                            spacer + ":" + spacer_location + "=>" + target_contig + ":" + blast_location)
                     elif target_contig != spacer_contig:
-                        print("Spacer above Self-Targets %s, at position: %s " %(target_contig,blast_location))
-                        self_targeting_regions.append(target_contig + ":" + blast_location)
-            if len(self_targeting_regions) >0:
-                CC_list.append(CRISPR_Cas["Contig"] + "|" + CRCasType + "|" + location + "|" + "STSS=" + ";".join(self_targeting_regions))
+                        # print(spacer + ":" + spacer_location + "=>" + target_contig + ":" + blast_location)
+                        self_targeting_regions.append(spacer + ":" + spacer_location + "=>" + target_contig + ":" + blast_location)
+            if len(self_targeting_regions) > 0:
+                CC_list.append(CRISPR_Cas["Contig"] + "|" + CRCasType + "|" + location + "|" + "STSS=" + "+".join(
+                    self_targeting_regions)) #This location indicate the Cas operon
+                STSS_region.append("+".join(self_targeting_regions))
             else:
                 CC_list.append(CRISPR_Cas["Contig"] + "|" + CRCasType + "|" + location + "|" + "No_STSS")
-            #Contig|CasTyper|Position|STSS_info
-        # CCs = ";".join(CC_list)
-        # print(CCs)
+                STSS_region.append("No_STSS")
+            # Contig|CasTyper|CasPosition|STSS_info
+        df_CCtable["Contig"] = CC_contig
+        df_CCtable["CRISPR-Cas Type"] = CC_type
+        # df_CCtable["CRISPR-Cas Location"] = CC_location
+        df_CCtable["CRISPR operon and location"] = C_operon_withLocation
+        df_CCtable["Cas operon and location"] = Cas_operon_withLocation
+        df_CCtable["STSS"] = STSS_region
+        df_CCtable["Contig Length"] = contig_length
+        df_CCtable.to_csv(os.path.join(general_folder, "CRISPR-Cas_found.csv"), index=False)
         return CC_list
 
 def find_prophage(fna,outputdir,threads):
@@ -334,12 +383,14 @@ def find_prophage(fna,outputdir,threads):
         phage_pos_end_dic = {}
         for line in subprocess.Popen(["grep", ">", phage_combined], stdout=subprocess.PIPE).stdout:
             line = line.decode('utf-8').rstrip().split()
-            contig = line[0].lstrip(">")
-            fragment = [v for v in line if "fragment" in v]
+            contig = line[0].lstrip(">") # this is actually proID
+            if "fragment" in contig:
+                fragment=[contig.split("fragment_")[-1].split("_")[0]]
+            else: fragment=[]
             positions_start_end = [int(s) for s in
                                    [v.lstrip("(").rstrip(")") for v in line if ".." in v][0].split("..")]
             if len(fragment) > 0:
-                contig_fragment_key = contig + "|" + fragment[0].split("_")[-2]
+                contig_fragment_key = contig.split("_fragment")[0] + "|" + fragment[0]
                 if contig_fragment_key not in phage_pos_start_dic:
                     phage_pos_start_dic.setdefault(contig_fragment_key, [positions_start_end[0]])
                 else:
@@ -349,7 +400,7 @@ def find_prophage(fna,outputdir,threads):
                 else:
                     phage_pos_end_dic[contig_fragment_key].append(positions_start_end[1])
             else:
-                contig_key = contig
+                contig_key = contig.rsplit("_",1)[0]
                 if contig_key not in phage_pos_start_dic:
                     phage_pos_start_dic.setdefault(contig_key, [positions_start_end[0]])
                 else:
@@ -361,12 +412,13 @@ def find_prophage(fna,outputdir,threads):
         phage_locations=[]
         prophage_out_table = os.path.join(outputdir, "prophage_locations.csv")
         newfile = open(prophage_out_table, "w")
-        newfile.write(",".join(["Contig", "Start", "End"]) + "\n")
+        newfile.write(",".join(["Contig","Start","End","Contig Length"])+"\n")
+        fna_dic=SeqIO.to_dict(SeqIO.parse(fna,"fasta"))
         for key in phage_pos_start_dic:
             pos_end = max(phage_pos_start_dic[key])
             pos_start = min(phage_pos_end_dic[key])
             phage_locations.append(key.split("|")[0] + ":" + str(pos_start) + "-" + str(pos_end)) # Contig:startPos-endPos
-            newfile.write(",".join([key.split("|")[0], str(pos_start), str(pos_end)]) + "\n")
+            newfile.write(",".join([key.split("|")[0],str(pos_start),str(pos_end),str(len(fna_dic[key.split("|")[0]].seq))])+"\n")
         return phage_locations
     else:
         print("No prophage found in sequence")
@@ -421,7 +473,7 @@ def Aca_HMM_search(aca_candidate_file,published_acaHMM,threads,hmm_outfile,evalu
             if coverage > coverage_cutoff: #Coverage filter
                 ## modified for prodigal ##
                 info_from_gff=[v.strip() for v in faa_dic[ID].description.split("#")]
-                contig_list.append("_".join(info_from_gff[0].split("_")[0:2]))
+                contig_list.append("_".join(info_from_gff[0].split("_")[:-1]))
                 wpid_list.append(ID)
                 start_list.append(info_from_gff[1])
                 end_list.append(info_from_gff[2])
@@ -429,7 +481,7 @@ def Aca_HMM_search(aca_candidate_file,published_acaHMM,threads,hmm_outfile,evalu
                     strand_list.append("-")
                 else:
                     strand_list.append("+")
-                contig_length_list.append(len(fna_dic[info_from_gff[0]].seq))
+                contig_length_list.append(len(fna_dic["_".join(info_from_gff[0].split("_")[:-1])].seq))
                 hmm_ID_list.append(aca)
                 ## modified for prodigal ##
                 hmm_coverage_list.append(str(coverage))

@@ -1,2 +1,0 @@
-Contig	CRISPR	Start	End	Consensus_repeat	N_repeats	Repeat_len	Spacer_len_avg	Repeat_identity	Spacer_identity	Spacer_len_sem	Trusted	Prediction	Subtype	Subtype_probability
-NZ_KB908465.1	NZ_KB908465.1_1	36403	38530	GTTCGCTGCCGCACAGGCAGCTCAGAAA	36	28	32	100.0	41.2	0.0	True	I-F	I-F	0.998
