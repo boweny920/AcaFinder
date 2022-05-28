@@ -1,0 +1,13 @@
+#                                                                            --- full sequence --- -------------- this domain -------------   hmm coord   ali coord   env coord
+# target name        accession   tlen query name           accession   qlen   E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
+#------------------- ---------- ----- -------------------- ---------- ----- --------- ------ ----- --- --- --------- --------- ------ ----- ----- ----- ----- ----- ----- ----- ---- ---------------------
+#
+# Program:         hmmscan
+# Version:         3.3.2 (Nov 2020)
+# Pipeline mode:   SCAN
+# Query file:      ../Performance_Test/AcaFinder_OUT_test3/GCF_004135975.1_ASM413597v1/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-0.faa
+# Target file:     HMM/Pfam-A.clan_HTH_le150bp.hmm
+# Option settings: hmmscan -o ../Performance_Test/AcaFinder_OUT_test3/GCF_004135975.1_ASM413597v1/log.hmm --domtblout ../Performance_Test/AcaFinder_OUT_test3/GCF_004135975.1_ASM413597v1/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-0.faa.hmmout --noali -E 1e-3 --cpu 2 HMM/Pfam-A.clan_HTH_le150bp.hmm ../Performance_Test/AcaFinder_OUT_test3/GCF_004135975.1_ASM413597v1/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-0.faa 
+# Current dir:     /mnt/array1/bowen/AcaFinder_project/AcaFinder_Ver4
+# Date:            Tue May 17 17:46:49 2022
+# [ok]

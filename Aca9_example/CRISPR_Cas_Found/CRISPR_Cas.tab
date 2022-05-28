@@ -1,0 +1,3 @@
+Contig	Operon	Operon_Pos	Prediction	CRISPRs	Distances	Prediction_Cas	Prediction_CRISPRs
+NZ_CP026538.1	NZ_CP026538.1@12	[1331476, 1340729]	I-E	['NZ_CP026538.1_1', 'NZ_CP026538.1_2']	[5953, 91]	I-E	['I-E', 'I-E']
+NZ_CP026538.1	NZ_CP026538.1@16	[1620670, 1629258]	I-C	['NZ_CP026538.1_3']	[284]	I-C	['Unknown']
