@@ -1,4 +1,0 @@
-NZ_CP026538.1 Desulfovibrio carbinolicus strain DSM 3852 chromosome, complete genome_fragment_20
-NZ_CP026538.1 Desulfovibrio carbinolicus strain DSM 3852 chromosome, complete genome_fragment_23
-NZ_CP026538.1 Desulfovibrio carbinolicus strain DSM 3852 chromosome, complete genome_fragment_35
-NZ_CP026538.1 Desulfovibrio carbinolicus strain DSM 3852 chromosome, complete genome_fragment_47

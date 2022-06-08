@@ -39,10 +39,19 @@ class Aca_Find_process:
         for i in enumerate(file_list):
             file_dic.setdefault(i[0],i[1])
 
-        loci_list,loci_list_result_check=loci_select_before_diamond(file_dic,self.all_protein_length_in_AcrAca_operon,self.intergenic_dist_in_AcrAca_operon)
         diamond_outfile=run_diamond(self.faa,sub_outputfolder_path,self.KnowAcrFaa,self.Acr_alignment_evalue,self.Acr_alignment_coverage,self.threads) # include KnownAcr.faa in tool directory
+        # Search for prophage and CRISPR-Cas
+        if self.Viral_Flag is False:
+            ##check if any complete CRISPR-Cas found, and check for self-targeting locations if any
+            complete_CRISPR_Cas_systems = find_complete_CRISPR_Cas_and_SelfTargeting(self.fna, os.path.join(sub_outputfolder_path, "CRISPR_Cas_Found"), self.threads, sub_outputfolder_path)  # Name of cctyper output directory is "CRISPR_Cas_Found"
+            # [Contig|CasTyper|Position|self-targeting regions,...]/None
+            prophage_regions = find_prophage(self.fna, sub_outputfolder_path, self.threads)
+            # [Contig:startPos-endPos,...]/None
+        else:
+            complete_CRISPR_Cas_systems = None
+            prophage_regions = None
         # Search the entire genome for potetnial Aca hmm hits
-        publishedAcaHMM_hits_dic = Aca_HMM_search(self.faa, self.published_acaHMM, self.threads,os.path.join(sub_outputfolder_path, "Aca_HMM_hits.hmmOut"),self.acaHMM_evalue,sub_outputfolder_path,self.acaHMM_cov,self.fna) # modified for prodigal
+        publishedAcaHMM_hits_dic = Aca_HMM_search(self.faa, self.published_acaHMM, self.threads,os.path.join(sub_outputfolder_path, "Aca_HMM_hits.hmmOut"),self.acaHMM_evalue,sub_outputfolder_path,self.acaHMM_cov,self.fna,complete_CRISPR_Cas_systems,prophage_regions) # modified for prodigal
 
         if is_non_zero_file(diamond_outfile) is not False:
             print("Acr homologs found in annotation genome","...")
@@ -52,6 +61,7 @@ class Aca_Find_process:
             protein_NP_list, dic_Acr = parse_diamond_get_proteinID(diamond_outfile) #Need to add coverage too
             ##Write the Acr homologs to a fasta file
             faa_file_wrote(protein_NP_list, self.faa, os.path.join(sub_outputfolder_path, "Acr_homologs.faa"))
+            loci_list, loci_list_result_check = loci_select(file_dic, dic_Acr,self.KnowAcrFaa, self.all_protein_length_in_AcrAca_operon, self.intergenic_dist_in_AcrAca_operon)
             for i in loci_list:
                 # Note: v[1] would be the protein ID not the gene order
                 if any(v for v in i if v[1] in protein_NP_list): Acr_homolog_candidate_list.append(i)
@@ -104,18 +114,9 @@ class Aca_Find_process:
 
                 ###CRISPR-Cas PRophage finding, and final output table make###
                 if len(output_checkResult_tables) > 0:
-                    if self.Viral_Flag is False:
-                        ##check if any complete CRISPR-Cas found, and check for self-targeting locations if any
-                        complete_CRISPR_Cas_systems=find_complete_CRISPR_Cas_and_SelfTargeting(self.fna,os.path.join(sub_outputfolder_path,"CRISPR_Cas_Found"),self.threads,sub_outputfolder_path) #Name of cctyper output directory is "CRISPR_Cas_Found"
-                        # [Contig|CasTyper|Position|self-targeting regions,...]/None
-                        prophage_regions=find_prophage(self.fna,sub_outputfolder_path,self.threads)
-                        # [Contig:startPos-endPos,...]/None
-                    else:
-                        complete_CRISPR_Cas_systems=None
-                        prophage_regions=None
                     protein_faa_dic=SeqIO.to_dict(SeqIO.parse(self.faa,"fasta"))
                     fna_dic = SeqIO.to_dict(SeqIO.parse(self.fna, "fasta"))
-                    df_allResult=pd.DataFrame(columns=["Operon Number","Protein ID","Contig ID","Strand","Protein Length","Start","End","Acr Homolog","Potential Aca","AcaHMM HIT","Pfam","Complete CRISPR-Cas and STSS", "Operon in Prophage","Protein Sequence"])
+                    df_allResult=pd.DataFrame(columns=["Operon Number","Protein ID","Contig ID","Strand","Protein Length (nt)","Start","End","Acr Homolog","Potential Aca","AcaHMM HIT","Pfam","Complete CRISPR-Cas and STSS", "Operon in Prophage","Protein Sequence"])
                     for out_table in output_checkResult_tables:
                         if is_non_zero_file(out_table):
                             faa_list = []
@@ -126,7 +127,7 @@ class Aca_Find_process:
                             contig_length_list = []
                             df_outTable = pd.read_csv(out_table,header=None,sep="\t")
                             # df_outTable.drop(9, axis=1, inplace=True) #Need to check, need to drop still?
-                            df_outTable.columns=["Protein ID","Contig ID","Strand","Protein Length","Start","End","Acr Homolog","Potential Aca","AcaHMM HIT"]
+                            df_outTable.columns=["Protein ID","Contig ID","Strand","Protein Length (nt)","Start","End","Acr Homolog","Potential Aca","AcaHMM HIT"]
 
                             ##check if aca operon in prophage
                             if prophage_regions is not None:
@@ -154,7 +155,7 @@ class Aca_Find_process:
                             df_outTable["Protein Sequence"]=faa_list
                             df_outTable["Pfam"]=pfam_list
                             df_outTable["Contig Length (nt)"] = contig_length_list
-                            df_outTable = df_outTable[["Operon Number","Protein ID","Contig ID","Contig Length (nt)","Strand","Protein Length","Start","End","Acr Homolog","Potential Aca","AcaHMM HIT","Pfam","Complete CRISPR-Cas and STSS", "Operon in Prophage","Protein Sequence"]]
+                            df_outTable = df_outTable[["Operon Number","Protein ID","Contig ID","Contig Length (nt)","Strand","Protein Length (nt)","Start","End","Acr Homolog","Potential Aca","AcaHMM HIT","Pfam","Complete CRISPR-Cas and STSS", "Operon in Prophage","Protein Sequence"]]
                             df_allResult=pd.concat([df_allResult,df_outTable])
                         df_allResult.to_csv(os.path.join(sub_outputfolder_path,"All_Aca_operons.csv"),index=False)
 
