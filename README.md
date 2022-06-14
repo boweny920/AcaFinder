@@ -145,8 +145,8 @@ AcrFinder needs **.fna**, **.gff** and **.faa** as input. Only **.fna** file as 
 
 #### Output files
 
-| Name                 | Meaning     |
-| -------------------- | ----------- |
+| Name                 | Meaning               |
+| -------------------- | --------------------- |
 |*<output_dir>*/Acr_homolog_positive_Short_Gene_Operons   | Folder containing intermediate Acr-Aca operon result files |
 |*<output_dir>*/CRISPR_Cas_Found   | CCtyper direct output folder |
 |*<output_dir>*/VIBRANT_*<input_ID>*_genomic   | VIBRANT direct output folder |
