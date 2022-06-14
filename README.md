@@ -145,3 +145,64 @@ AcrFinder needs **.fna**, **.gff** and **.faa** as input. Only **.fna** file as 
 
 #### Output files
 
+| Name                 | Meaning     |
+| -------------------- | ----------- |
+|*<output_dir>*/Acr_homolog_positive_Short_Gene_Operons   | Folder containing intermediate Acr-Aca operon result files |
+|*<output_dir>*/CRISPR_Cas_Found   | CCtyper direct output folder |
+|*<output_dir>*/VIBRANT_*<input_ID>*_genomic   | VIBRANT direct output folder |
+|*<output_dir>*/Aca-like_protein.csv    | Final results from the AcaHMM search approach |
+|*<output_dir>*/Aca-like_protein.faa    | Final results from the AcaHMM search approach, the Aca-like protein fasta sequences | 
+|*<output_dir>*/Aca_HMM_hits.hmmOut    | AcaHMM hmmersearch output | 
+|*<output_dir>*/log_acaHMM.hmm    | AcaHMM hmmersearch log file | 
+|*<output_dir>*/Acr_homologs.faa    | Protein seuqnces of Acr homologs found from input genomic sequences | 
+|*<output_dir>*/All_Aca_operons.csv    | Final results from the GBA search approach |
+|*<output_dir>*/CRISPR-Cas_found.csv   | Summary of Complete CRISPR-Cas systems discovered |
+|*<output_dir>*/diamond_blastp_result.txt   | Diamond blastp output from Acr homolog search |
+|*<output_dir>*/diamond_blastp_result.coverageParsed.txt   | Diamond blastp output from Acr homolog search, parsed for coverage | 
+|*<output_dir>*/log_HTH.hmm    | HTH domain hmmerscan log file | 
+|*<output_dir>*/prophage_locations.csv    | Summary of prophage regions discovered |
+|*<output_dir>*/Acr_homolog_positive_Short_Gene_Operons/Aca_candidates_within_Acr_Homolog_poisitve_SGO_OperonNumber-*<operon_ID>*.faa   | Protein fast file of final Aca-Acr operon | 
+|*<output_dir>*/Acr_homolog_positive_Short_Gene_Operons/GBA_identified_AcrAca_loci_OperonNumber-*<operon_ID>*.check_Result  | Summary file of final Aca-Acr operon | 
+|*<output_dir>*/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-*<operon_ID>*.faa | Protein fast file of short-Gene-Operons with Acr homologs |
+|*<output_dir>*/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-*<operon_ID>*.faa.hmmout | hmmscan output of HTH search within short-Gene-Operons with Acr homologs |
+|*<output_dir>*/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-*<operon_ID>*.faa.hmmout.Coverage_parsed | hmmscan output of HTH search within short-Gene-Operons with Acr homologs |
+|*<output_dir>*/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-*<operon_ID>*.faa.hmmout.Coverage_parsed.new_found_ACA.faa | HTH positive proteins fasta sequences within short-Gene-Operons with Acr homologs |
+*<output_dir>*/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-*<operon_ID>*.faa.pfamScanOut | Pfam annoatations of proteins of short-Gene-Operons with Acr homologs |
+
+****
+
+<div id='examples' />
+
+## **IV. <span style='color:RebeccaPurple'>Examples</span>**
+
+```sh
+python3 AcaFind_runner.py --FNA_file sample_organisms/GCF_000381965.1_ASM38196v1_genomic.fna --FAA_file sample_organisms/GCF_000381965.1_ASM38196v1_genomic.gff --GFF_file sample_organisms/GCF_000381965.1_ASM38196v1_protein.faa -o [output_dir] 
+```
+or you can only use **.fna** file as input.
+
+```sh
+python3 AcaFind_runner.py --FNA_file sample_organisms/GCF_000381965.1_ASM38196v1_genomic.fna -o [output_dir] 
+```
+
+You will see the output result in output_dir/. If you dont specifiy an output_dir, result will be in AcaFinder_Output/
+
+
+****
+
+<div id="workflow" />
+
+## **V. <span style='color:RebeccaPurple'>Workflow of AcaFinder</span>**
+
+<img src="http://bcb.unl.edu/AcrFinder/styles/img/help/pipeline.png">
+
+With provided input, AcaFinder proceed to 2 Aca screening routes:
+
+i) HMM approach Aca-like protein find (purple box)
+
+ii) GBA (guilt-by-association) approach Aca protein/operon find (orange box), generating predicted Aca operons/Aca proteins. 
+
+Complete CRISPR-Cas along with STSS (blue box) and prophage regions (green box) will also be searched from input genomic sequences. 
+
+**All generated information will be associated together, and provided to the users as tables.** 
+
+****
