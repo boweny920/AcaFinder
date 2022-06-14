@@ -4,6 +4,7 @@ import pandas as pd
 from Bio import SeqIO
 import os
 import pprint as pp
+import numpy as np
 
 def make_output_folder(GCF_Name):
     os.makedirs(GCF_Name)
@@ -71,69 +72,64 @@ def result_check_list(list):
     check_result = [ProID, contig(list), gene_strand, gene_length, list[3], list[4]]
     return check_result
 
-def loci_select_before_diamond(file_dic,all_protein_lenbp=600,intergenic_dist=250):
+def loci_select(file_dic, dic_Acr, knwonAcrfaa, all_protein_lenbp=600, intergenic_dist=250):
     ###################################################################
     ###   Get the regions that contain at least two genes, each gene must
     ###   be on the same strand, each gene must be less than 200 aa or 600 nucleotides
-    key=0
-    lst=[]
-    loci_list=[]
-    lst_result_check=[]
-    loci_list_result_check=[]
+    key = 0
+    lst = []
+    loci_list = []
+    loci_list_result_check = []
     while key in file_dic.keys():
-        ##First filter gene length:
-        if length(file_dic[key]) < all_protein_lenbp:
-            #This is working!!
-            if key-1 in file_dic.keys() and strand(file_dic[key]) == strand(file_dic[key-1]) and contig(file_dic[key]) == contig(file_dic[key-1]) and length(file_dic[key-1]) < all_protein_lenbp and protein_pos_start(file_dic[key]) - protein_pos_end(file_dic[key-1]) < intergenic_dist:
-                #print(contig(file_dic[key]))
-                lst.append(proteinInfo(file_dic[key]))
-                # This is for result checking
-                lst_result_check.append(result_check_list(file_dic[key]))
-                key=key+1
-            elif key+1 in file_dic.keys() and strand(file_dic[key])==strand(file_dic[key+1]) and contig(file_dic[key]) == contig(file_dic[key+1]) and length(file_dic[key+1]) < all_protein_lenbp and protein_pos_start(file_dic[key+1]) - protein_pos_end(file_dic[key]) < intergenic_dist:
-                if len(lst) >= 2:
-                    #if previous lst has 2 or more genes, append the lst to the loci_list
-                    loci_list.append(lst)
-                    loci_list_result_check.append(lst_result_check)
-                lst = []
-                lst_result_check = []
-                lst.append(proteinInfo(file_dic[key]))
-                lst.append(proteinInfo(file_dic[key+1]))
-                #This is for result checking
-                lst_result_check.append(result_check_list(file_dic[key]))
-                lst_result_check.append(result_check_list(file_dic[key+1]))
-
-                key=key+2
-            else:
-                key = key + 1
-                if len(lst) >= 2:
-                    # print(lst)
-                    loci_list.append(lst)
-                    loci_list_result_check.append(lst_result_check)
-                lst = []
-                lst_result_check = []
-        else:
-            key=key+1
+        # First get operons without considering protein length
+        if key - 1 in file_dic.keys() and strand(file_dic[key]) == strand(file_dic[key - 1]) and contig(file_dic[key]) == contig(file_dic[key - 1]) and int(protein_pos_start(file_dic[key]) - protein_pos_end(file_dic[key - 1])) < intergenic_dist:
+            lst.append(file_dic[key])
+            key = key + 1
+        elif key + 1 in file_dic.keys() and strand(file_dic[key]) == strand(file_dic[key + 1]) and contig(
+                file_dic[key]) == contig(file_dic[key + 1]) and int(protein_pos_start(file_dic[key + 1]) - protein_pos_end(file_dic[key])) < intergenic_dist:
             if len(lst) >= 2:
-                # print(lst)
+                # if previous lst has 2 or more genes, append the lst to the loci_list
                 loci_list.append(lst)
-                # This is for result checking
-                loci_list_result_check.append(lst_result_check)
-            lst=[]
-            lst_result_check = []
+            lst = []
+            lst.append(file_dic[key])
+            lst.append(file_dic[key + 1])
+            key = key + 2
+        else:
+            key = key + 1
+            if len(lst) >= 2:
+                loci_list.append(lst)
+            lst = []
     else:
         if len(lst) >= 2:
-            # print(lst)
             loci_list.append(lst)
-            # This is for result checking
-            loci_list_result_check.append(lst_result_check)
-        lst = []
-        lst_result_check = []
+    knownAcrFaa_dic=SeqIO.to_dict(SeqIO.parse(knwonAcrfaa,"fasta"))
+    loci_list_length_adapat=[]
+    for operon in loci_list:
+        Acrs_in_operon = [dic_Acr[proteinID(proteinInfo(v))] for v in operon if proteinID(proteinInfo(v)) in dic_Acr]
+        if len(Acrs_in_operon) > 0:
+            Acrs_in_operon_maxLength=max([len(knownAcrFaa_dic[v].seq) for v in Acrs_in_operon])
+            if Acrs_in_operon_maxLength*3 < 600: maxProtein_length = all_protein_lenbp
+            elif Acrs_in_operon_maxLength*3 > 600: maxProtein_length = Acrs_in_operon_maxLength*3
+            num_operon=len(operon)
+            operons_seperated=[]
+            n=0
+            while n < num_operon:
+                if length(operon[n]) < maxProtein_length:
+                    operons_seperated.append(operon[n])
+                    n = n + 1
+                else:
+                    if len(operons_seperated) >=2 and any(v for v in operons_seperated if proteinID(proteinInfo(v)) in dic_Acr):
+                        loci_list_length_adapat.append([proteinInfo(v) for v in operons_seperated])
+                        loci_list_result_check.append([result_check_list(v) for v in operons_seperated])
+                    operons_seperated = []
+                    n=n+1
+            else:
+                if len(operons_seperated) >= 2 and any(v for v in operons_seperated if proteinID(proteinInfo(v)) in dic_Acr):
+                    loci_list_length_adapat.append([proteinInfo(v) for v in operons_seperated])
+                    loci_list_result_check.append([result_check_list(v) for v in operons_seperated])
 
-    loci_list_w_pseudo=proteinInfo_List_process(loci_list)
-    # pp.pprint(loci_list_w_pseudo)
-    # pp.pprint(loci_list_result_check)
-    return loci_list_w_pseudo,loci_list_result_check
+    loci_list_length_adapat_w_pseudo=proteinInfo_List_process(loci_list_length_adapat)
+    return loci_list_length_adapat_w_pseudo, loci_list_result_check
 
 def is_non_zero_file(fpath):
     #Check if file is empty or does not exsit
@@ -225,7 +221,7 @@ def potential_new_aca_faa_filemake(parsed_hmm_outfile,newAcrAca_faaFile,unhmmer_
         acaout=subprocess.Popen(["awk '{print $1,$2,$4}' %s |sort -u "%parsed_hmm_outfile],shell=True, stdout=subprocess.PIPE)
         for line in acaout.stdout:
             HTH,pfamID,ID=line.rstrip().decode('utf-8').split()
-            if ID in unhmmer_aca:
+            if ID in unhmmer_aca and len(record_dict[ID].seq) < 150: #Parse for Aca length
                 # If Aca is not in unhmmer, then it should not be considered as a potential Aca(here is to make sure that condiction "gene distance < 3" is applied)
                 if ID not in Aca_Pro_lst_dic.keys():
                     Aca_Pro_lst_dic.setdefault(ID,[HTH+"="+pfamID])
@@ -447,7 +443,7 @@ def pfamScan_run(operon_faa_file, pfam_hmm_dir,threads,HTH_alignment_evalue):
             dic_pfam.setdefault(record.id,";".join(info_list))
     return dic_pfam
 
-def Aca_HMM_search(aca_candidate_file,published_acaHMM,threads,hmm_outfile,evalue_cut_off,outdir,coverage_cutoff,fna_file):
+def Aca_HMM_search(aca_candidate_file,published_acaHMM,threads,hmm_outfile,evalue_cut_off,outdir,coverage_cutoff,fna_file,complete_CRISPR_Cas_systems,prophage_regions):
     fna_dic = SeqIO.to_dict(SeqIO.parse(fna_file, "fasta"))
     subprocess.Popen(
         ['hmmsearch', '--domtblout', hmm_outfile, '-o', os.path.join(outdir, 'log_aca.hmm'), '--noali', "--cpu", threads,
@@ -469,8 +465,8 @@ def Aca_HMM_search(aca_candidate_file,published_acaHMM,threads,hmm_outfile,evalu
         if "#" not in line[0]:
             ID = line[0]
             aca = line[3]
-            coverage=(int(line[16]) - int(line[15]) + 1) / int(line[5]) #hmm coverage
-            if coverage > coverage_cutoff: #Coverage filter
+            coverage=(int(line[16]) - int(line[15]) + 1) / int(line[5])  #hmm coverage
+            if coverage > coverage_cutoff and int(line[2]) < 150: #Coverage filter and protein length filter
                 ## modified for prodigal ##
                 info_from_gff=[v.strip() for v in faa_dic[ID].description.split("#")]
                 contig_list.append("_".join(info_from_gff[0].split("_")[:-1]))
@@ -504,6 +500,29 @@ def Aca_HMM_search(aca_candidate_file,published_acaHMM,threads,hmm_outfile,evalu
         df["Aca HMM ID"]=hmm_ID_list
         df["Aca-like Protein Coverage"]=hmm_coverage_list
         df["Aca HMM Evalue"]=evalue_list
-        df.to_csv(os.path.join(outdir, 'Aca-like_protein.csv'),index=False)
+        ##Adding prophage and CRISPRCas information to table
+        prophage_with_Acas = []
+        for index, row in df.iterrows():
+            if prophage_regions is not None:
+                operon_location = row["Start Location"] + "-" + row["End Location"]
+                operon_contig = row["Contig"]
+                prophage_withOperon = [v for v in prophage_regions if
+                                       distance_cal(v.split(":")[-1], operon_location) == 0 and operon_contig ==
+                                       v.split(":")[0]]
+                if len(prophage_withOperon) > 0:
+                    prophage_with_Acas.append(";".join(prophage_withOperon))  # Contig:startPos-endPos
+                else:
+                    prophage_with_Acas.append(np.nan)
+            else:
+                prophage_with_Acas.append(np.nan)
+        df["Aca in Prophage"] = prophage_with_Acas
+        Complete_CRISPR_Cas_inContig_list = []
+        for index, row in df.iterrows():
+            if complete_CRISPR_Cas_systems is not None:
+                Complete_CRISPR_Cas_inContig_list.append(";".join(complete_CRISPR_Cas_systems))
+            else: Complete_CRISPR_Cas_inContig_list.append(np.nan)
+        df["Complete CRISPR-Cas and STSS"] = Complete_CRISPR_Cas_inContig_list
+
+    df.to_csv(os.path.join(outdir, 'Aca-like_protein.csv'),index=False)
 
     return AcaPub_Pro_lst_dic
