@@ -195,14 +195,6 @@ You will see the output result in output_dir/. If you dont specifiy an output_di
 
 <img src="http://bcb.unl.edu/AcrFinder/styles/img/help/pipeline.png">
 
-With provided input, AcaFinder proceed to 2 Aca screening routes:
-
-i) HMM approach Aca-like protein find (purple box)
-
-ii) GBA (guilt-by-association) approach Aca protein/operon find (orange box), generating predicted Aca operons/Aca proteins. 
-
-Complete CRISPR-Cas along with STSS (blue box) and prophage regions (green box) will also be searched from input genomic sequences. 
-
 **All generated information will be associated together, and provided to the users as tables.** 
 
 ****
