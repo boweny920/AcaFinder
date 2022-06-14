@@ -1,4 +1,4 @@
-**<center>AcaFinder</center>**
+<img src="http://bcb.unl.edu/AcaFinder/img/AcaFinder-logos.jpeg" width="400" height="400">
 
 <center>(c) <a href='http://bcb.unl.edu'>Yin Lab</a>@<a href='https://www.unl.edu'>UNL</a>2022</center>
 
