@@ -22,7 +22,7 @@ parser.add_argument('-n','--FNA_file',nargs='?',default=None,help="Genome FNA fi
 parser.add_argument('-p','--FAA_file', nargs='?',default=None ,help="Genome annotated FAA file")
 parser.add_argument('-g','--GFF_file', nargs='?',default=None, help="Genome annotated GFF file")
 parser.add_argument('-m','--mode_prodiagal', nargs='?', default="meta",choices=["single","meta"],help="mode prodigal will be run")
-parser.add_argument('-o','--outputFolder',type=str,default="AcaFinder_Output",help="folder containing all output results of all ran GCFs")
+parser.add_argument('-o','--outputFolder',type=str,default="AcaFinder_Output",help="folder containing all output results")
 parser.add_argument('-a','--Acr_alignment_evalue', nargs='?', default="1e-3",help="evalue cut-off for Acr homolog search")
 parser.add_argument('-c','--Acr_alignment_coverage', nargs='?', default="0.6",help="coverage cut-off for Acr homolog search")
 parser.add_argument('-t','--HTH_alignment_evalue', nargs='?', default="1e-3",help="evalue cut-off for HTH domian hummer search")

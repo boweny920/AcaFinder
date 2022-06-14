@@ -117,7 +117,7 @@ def loci_select(file_dic, dic_Acr, knwonAcrfaa, all_protein_lenbp=600, intergeni
                 if length(operon[n]) < maxProtein_length:
                     operons_seperated.append(operon[n])
                     n = n + 1
-                elif length(operon[n]) > maxProtein_length:
+                else:
                     if len(operons_seperated) >=2 and any(v for v in operons_seperated if proteinID(proteinInfo(v)) in dic_Acr):
                         loci_list_length_adapat.append([proteinInfo(v) for v in operons_seperated])
                         loci_list_result_check.append([result_check_list(v) for v in operons_seperated])

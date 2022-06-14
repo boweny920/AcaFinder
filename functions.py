@@ -105,16 +105,18 @@ def loci_select(file_dic, dic_Acr, knwonAcrfaa, all_protein_lenbp=600, intergeni
         Acrs_in_operon = [dic_Acr[proteinID(proteinInfo(v))] for v in operon if proteinID(proteinInfo(v)) in dic_Acr]
         if len(Acrs_in_operon) > 0:
             Acrs_in_operon_maxLength=max([len(knownAcrFaa_dic[v].seq) for v in Acrs_in_operon])
-            if Acrs_in_operon_maxLength * 3 < 600: maxProtein_length = all_protein_lenbp
-            elif Acrs_in_operon_maxLength * 3 > 600: maxProtein_length = Acrs_in_operon_maxLength * 3
-            num_operon=len(operon)
+            if Acrs_in_operon_maxLength * 3 < 600:
+                maxProtein_length = all_protein_lenbp
+            elif Acrs_in_operon_maxLength * 3 > 600:
+                maxProtein_length = Acrs_in_operon_maxLength * 3
+            num_pro_in_operon=len(operon)
             operons_seperated=[]
             n=0
-            while n < num_operon:
+            while n < num_pro_in_operon:
                 if length(operon[n]) < maxProtein_length:
                     operons_seperated.append(operon[n])
                     n = n + 1
-                elif length(operon[n]) > maxProtein_length:
+                else:
                     if len(operons_seperated) >=2 and any(v for v in operons_seperated if proteinID(proteinInfo(v)) in dic_Acr):
                         loci_list_length_adapat.append([proteinInfo(v) for v in operons_seperated])
                         loci_list_result_check.append([result_check_list(v) for v in operons_seperated])
