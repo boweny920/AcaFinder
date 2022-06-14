@@ -193,7 +193,7 @@ You will see the output result in output_dir/. If you dont specifiy an output_di
 
 ## **V. <span style='color:RebeccaPurple'>Workflow of AcaFinder</span>**
 
-<img src="http://bcb.unl.edu/AcrFinder/styles/img/help/pipeline.png">
+<img src="http://bcb.unl.edu/AcaFinder/img/Figure2_Pipeline.png">
 
 **All generated information will be associated together, and provided to the users as tables.** 
 
