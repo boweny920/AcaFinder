@@ -176,12 +176,12 @@ AcrFinder needs **.fna**, **.gff** and **.faa** as input. Only **.fna** file as 
 ## **IV. <span style='color:RebeccaPurple'>Examples</span>**
 
 ```sh
-python3 AcaFind_runner.py --FNA_file sample_organisms/GCF_000381965.1_ASM38196v1_genomic.fna --FAA_file sample_organisms/GCF_000381965.1_ASM38196v1_genomic.gff --GFF_file sample_organisms/GCF_000381965.1_ASM38196v1_protein.faa -o [output_dir] 
+python3 AcaFind_runner.py --FNA_file sample_organism/GCF_000381965.1_ASM38196v1_genomic.fna --FAA_file sample_organism/GCF_000381965.1_ASM38196v1_genomic.gff --GFF_file sample_organism/GCF_000381965.1_ASM38196v1_protein.faa -o [output_dir] 
 ```
 or you can only use **.fna** file as input.
 
 ```sh
-python3 AcaFind_runner.py --FNA_file sample_organisms/GCF_000381965.1_ASM38196v1_genomic.fna -o [output_dir] 
+python3 AcaFind_runner.py --FNA_file sample_organism/GCF_000381965.1_ASM38196v1_genomic.fna -o [output_dir] 
 ```
 
 You will see the output result in output_dir/. If you dont specifiy an output_dir, result will be in AcaFinder_Output/
