@@ -48,7 +48,7 @@ It is advised to use conda, since this installs CRISPRCasTyper and all dependenc
 
 To use conda:
 ```sh
-conda create -n cctyper -c conda-forge -c bioconda -c russel88 cctyper
+conda install -c conda-forge -c bioconda -c russel88 cctyper
 ```
 
 To use pip:
