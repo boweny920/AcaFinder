@@ -93,7 +93,7 @@ conda install -c bioconda/label/cf201901 pfam_scan
 Downloading Pfam database
 ```sh
 # a. Go to the all_pFam_hmm/ folder
-
+cd all_pFam_hmm/
 # b. Download database: 
 wget http://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz
 
