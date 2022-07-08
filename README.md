@@ -1,4 +1,4 @@
-**<center>AcaFinder</center>**
+<img src="http://bcb.unl.edu/AcaFinder/img/AcaFinder-logos.jpeg" width="400" height="400">
 
 <center>(c) <a href='http://bcb.unl.edu'>Yin Lab</a>@<a href='https://www.unl.edu'>UNL</a>2022</center>
 
@@ -28,6 +28,12 @@
 
 Program expects these versions and using other versions can result in unexpected behavior.
 
+`Python` - Your python version should be >=3.8. It is recommended that you create a conda enviroment and install all the below dependences within said enviroment:
+```sh
+## python version 3.9 is used here as an example
+conda create -n AcaFinder python=3.9
+```
+
 `VIBRANT` - Used to search for potential prophage regions from input genomic sequences
 
 Version used v1.2.0. We recommend installing VIBRANT using Anaconda, but you may also install VIBRANT with other methods from https://github.com/AnantharamanLab/VIBRANT
@@ -36,10 +42,13 @@ To install using Anaconda,
 Install dependencies. See Requirements section https://github.com/AnantharamanLab/VIBRANT.
 Install directly to $PATH using bioconda. 
 ```sh
-conda install -c bioconda vibrant==1.2.0
+conda install -c bioconda vibrant
 ```
 
 Download and setup databases. This will take some time due to file sizes, but it only needs to be run once. This step requires ~20GB of temporary storage space and ~11GB of final storage space. To do this, run download-db.sh which should be in your system's $PATH. download-db.sh
+```sh
+download-db.sh
+```
 
 `Cctyper` - Used for complete CRISPR-Cas system search
 
@@ -48,7 +57,7 @@ It is advised to use conda, since this installs CRISPRCasTyper and all dependenc
 
 To use conda:
 ```sh
-conda create -n cctyper -c conda-forge -c bioconda -c russel88 cctyper
+conda install -c conda-forge -c bioconda -c russel88 cctyper
 ```
 
 To use pip:
@@ -104,7 +113,7 @@ hmmpress Pfam-A.hmm
 
 ### AcaFinder allows for automated genome mining for reliable Acas. 
 
-To more confidently identify Acas given a genome or metagenome assembled genome, we implemented two approaches. The first approach is based on guilt-by-association (GBA), meaning that we identify homologs of Acrs first and then search for HTH-containing proteins in the acr gene neighborhood. The second approach is to build an HMM (hidden markov model) database using training data of the 13 known Aca families, and then search for Aca homologs with this Aca-HMMdb instead of Pfam HTH HMMs. In addition to the two implemented approaches, AcaFinder also integrates a CRISPR-Cas search tool (CRISPRCasTyper), a prophage search tool (VIBRANT), and in-house a Self-targeting spacer (STSS) searching tool, providing users with detailed information vital to the assessment of Aca predictions
+To more confidently identify Acas given a genome or metagenome assembled genome, we implemented two approaches. The first approach is based on guilt-by-association (GBA), meaning that we identify homologs of Acrs first and then search for HTH-containing proteins in the acr gene neighborhood. The second approach is to build an HMM (hidden markov model) database using training data of the 12 known Aca families, and then search for Aca homologs with this Aca-HMMdb instead of Pfam HTH HMMs. In addition to the two implemented approaches, AcaFinder also integrates a CRISPR-Cas search tool (CRISPRCasTyper), a prophage search tool (VIBRANT), and in-house a Self-targeting spacer (STSS) searching tool, providing users with detailed information vital to the assessment of Aca predictions
 
 ****
 
@@ -145,8 +154,8 @@ AcrFinder needs **.fna**, **.gff** and **.faa** as input. Only **.fna** file as 
 
 #### Output files
 
-| Name                 | Meaning     |
-| -------------------- | ----------- |
+| Name                 | Meaning               |
+| -------------------- | --------------------- |
 |*<output_dir>*/Acr_homolog_positive_Short_Gene_Operons   | Folder containing intermediate Acr-Aca operon result files |
 |*<output_dir>*/CRISPR_Cas_Found   | CCtyper direct output folder |
 |*<output_dir>*/VIBRANT_*<input_ID>*_genomic   | VIBRANT direct output folder |
@@ -176,12 +185,12 @@ AcrFinder needs **.fna**, **.gff** and **.faa** as input. Only **.fna** file as 
 ## **IV. <span style='color:RebeccaPurple'>Examples</span>**
 
 ```sh
-python3 AcaFind_runner.py --FNA_file sample_organisms/GCF_000381965.1_ASM38196v1_genomic.fna --FAA_file sample_organisms/GCF_000381965.1_ASM38196v1_genomic.gff --GFF_file sample_organisms/GCF_000381965.1_ASM38196v1_protein.faa -o [output_dir] 
+python3 AcaFind_runner.py --FNA_file sample_organism/GCF_000381965.1_ASM38196v1_genomic.fna --GFF_file sample_organism/GCF_000381965.1_ASM38196v1_genomic.gff --FAA_file sample_organism/GCF_000381965.1_ASM38196v1_protein.faa -o [output_dir] 
 ```
 or you can only use **.fna** file as input.
 
 ```sh
-python3 AcaFind_runner.py --FNA_file sample_organisms/GCF_000381965.1_ASM38196v1_genomic.fna -o [output_dir] 
+python3 AcaFind_runner.py --FNA_file sample_organism/GCF_000381965.1_ASM38196v1_genomic.fna -o [output_dir] 
 ```
 
 You will see the output result in output_dir/. If you dont specifiy an output_dir, result will be in AcaFinder_Output/
@@ -193,7 +202,8 @@ You will see the output result in output_dir/. If you dont specifiy an output_di
 
 ## **V. <span style='color:RebeccaPurple'>Workflow of AcaFinder</span>**
 
-<img src="http://bcb.unl.edu/AcrFinder/styles/img/help/pipeline.png">
+<img src="http://bcb.unl.edu/AcaFinder/img/Figure2_Pipeline.png">
+
 
 With provided input, AcaFinder proceed to 2 Aca screening routes:
 
