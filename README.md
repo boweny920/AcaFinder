@@ -44,7 +44,7 @@ To install using Anaconda,
 Install dependencies. See Requirements section https://github.com/AnantharamanLab/VIBRANT.
 Install directly to $PATH using bioconda. 
 ```sh
-conda install -c bioconda vibrant
+conda install -c bioconda vibrant==1.2.1
 ```
 
 Download and setup databases. This will take some time due to file sizes, but it only needs to be run once. This step requires ~20GB of temporary storage space and ~11GB of final storage space. To do this, run download-db.sh which should be in your system's $PATH. download-db.sh
