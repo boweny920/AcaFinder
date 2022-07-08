@@ -28,6 +28,12 @@
 
 Program expects these versions and using other versions can result in unexpected behavior.
 
+`Python` - Python version should be >=3.8. It is recommended that you create a conda enviroment and install all the below dependences within said enviroment:
+```sh
+## python version 3.9 is used here as an example
+conda create -n TestAcaFinder python=3.9
+```
+
 `VIBRANT` - Used to search for potential prophage regions from input genomic sequences
 
 Version used v1.2.0. We recommend installing VIBRANT using Anaconda, but you may also install VIBRANT with other methods from https://github.com/AnantharamanLab/VIBRANT
