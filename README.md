@@ -28,7 +28,7 @@
 
 Program expects these versions and using other versions can result in unexpected behavior.
 
-`Python` - Python version should be >=3.8. It is recommended that you create a conda enviroment and install all the below dependences within said enviroment:
+`Python` - Your python version should be >=3.8. It is recommended that you create a conda enviroment and install all the below dependences within said enviroment:
 ```sh
 ## python version 3.9 is used here as an example
 conda create -n TestAcaFinder python=3.9
