@@ -24,6 +24,8 @@
 
 ## I. Installation / Dependencies
 
+Git clone the Github directory to your own, and go to the AcaFinder directory
+
 ### Dependences 
 
 Program expects these versions and using other versions can result in unexpected behavior.
