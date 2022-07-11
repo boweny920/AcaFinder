@@ -30,9 +30,9 @@ Git clone the Github directory to your own, and go to the AcaFinder directory
 
 Program expects these versions and using other versions can result in unexpected behavior.
 
-`Python` - Your python version should be >=3.8. It is recommended that you create a conda enviroment and install all the below dependences within said enviroment:
+`Python` - Your python version should be ==3.8. It is recommended that you create a conda enviroment and install all the below dependences within said enviroment:
 ```sh
-## python version 3.8 is used here as an example
+## Environment named "AcaFinder" is created here as an example
 conda create -n AcaFinder python=3.8
 ```
 
