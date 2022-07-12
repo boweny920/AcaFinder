@@ -24,14 +24,16 @@
 
 ## I. Installation / Dependencies
 
+Git clone the Github directory to your own, and go to the AcaFinder directory
+
 ### Dependences 
 
 Program expects these versions and using other versions can result in unexpected behavior.
 
-`Python` - Your python version should be >=3.8. It is recommended that you create a conda enviroment and install all the below dependences within said enviroment:
+`Python` - Your python version should be ==3.8. It is recommended that you create a conda enviroment and install all the below dependences within said enviroment:
 ```sh
-## python version 3.9 is used here as an example
-conda create -n AcaFinder python=3.9
+## Environment named "AcaFinder" is created here as an example
+conda create -n AcaFinder python=3.8
 ```
 
 `VIBRANT` - Used to search for potential prophage regions from input genomic sequences
@@ -42,7 +44,7 @@ To install using Anaconda,
 Install dependencies. See Requirements section https://github.com/AnantharamanLab/VIBRANT.
 Install directly to $PATH using bioconda. 
 ```sh
-conda install -c bioconda vibrant
+conda install -c bioconda vibrant==1.2.0
 ```
 
 Download and setup databases. This will take some time due to file sizes, but it only needs to be run once. This step requires ~20GB of temporary storage space and ~11GB of final storage space. To do this, run download-db.sh which should be in your system's $PATH. download-db.sh
@@ -93,6 +95,7 @@ conda install -c bioconda/label/cf201901 pfam_scan
 Downloading Pfam database
 ```sh
 # a. Go to the all_pFam_hmm/ folder
+cd all_pFam_hmm/
 
 # b. Download database: 
 wget http://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz
