@@ -31,7 +31,7 @@ class Aca_Find_process:
     def run_process(self):
         sub_outputfolder_path=self.outputFolder
         file_list=[]
-        file=subprocess.Popen(['grep "CDS" %s'%(self.gff)],shell=True, stdout=subprocess.PIPE)
+        file=subprocess.Popen(['grep "CDS" %s|grep -v "#"'%(self.gff)],shell=True, stdout=subprocess.PIPE)
         for line in file.stdout:
             line = line.decode('utf-8').rstrip().split('\t')
             file_list.append(line)
