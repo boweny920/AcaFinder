@@ -106,7 +106,7 @@ gunzip Pfam-A.hmm.gz
 #d. Prepare HMM files 
 hmmpress Pfam-A.hmm
 ```
-EMBOSS package - For palindromic repeats scanning in operon promoters
+`EMBOSS package` - For palindromic repeats scanning in operon promoters
 
 Instal with Anaconda
 ```sh
