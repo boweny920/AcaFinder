@@ -526,3 +526,48 @@ def Aca_HMM_search(aca_candidate_file,published_acaHMM,threads,hmm_outfile,evalu
     df.to_csv(os.path.join(outdir, 'Aca-like_protein.csv'),index=False)
 
     return AcaPub_Pro_lst_dic
+
+def IR_find(df_allResult,fna_file,sub_outputfolder_path):
+    fna_dic=SeqIO.to_dict(SeqIO.parse(fna_file,"fasta"))
+    IR_dir=os.path.join(sub_outputfolder_path,"Inverted_Repeats")
+    if os.path.isdir(IR_dir) == False:
+        os.makedirs(IR_dir)
+    operonID=""
+    start_pos_list=[]
+    operon_withPAL=[]
+    for index, row in df_allResult.iterrows():
+        if (row["Operon Number"] != operonID and len(start_pos_list)>0) or (index==df_allResult.index[-1]):
+            promoter_end=min(start_pos_list)
+            if promoter_end <= 400:
+                promoter_start=0
+            else:
+                promoter_start=promoter_end-400
+            ### Process IRs ###
+            operonContig=df_allResult.loc[[index-1]]["Contig ID"].to_string(index=False)
+            # print(promoter_end,promoter_start,operonID,operonContig)
+            promoter_seq=str(fna_dic[operonContig].seq[promoter_start:promoter_end])
+            # print(promoter_seq)
+            operon_promoter_fna=os.path.join(IR_dir,operonID+"_promoter-region.fna")
+            with open(operon_promoter_fna,"w") as newfile:
+                newfile.write(">"+operonID+"_promoter-region"+"\n")
+                newfile.write(promoter_seq)
+            operon_promoter_fna_outfile=operon_promoter_fna+".pal"
+            subprocess.Popen(["palindrome",operon_promoter_fna,"-minpallen","10","-maxpallen", "100", "-gaplimit", "100", "-nummismatches", "0", "-overlap", "Y", "-outfile",operon_promoter_fna_outfile]).wait()
+            pal_found=[]
+            for line in subprocess.Popen(['grep -A 100000 "Palindromes:" %s|grep -v "Palindromes:"'%operon_promoter_fna_outfile],shell=True,stdout=subprocess.PIPE).stdout:
+                line=line.decode('utf-8').rstrip()
+                if line != "": pal_found.append(line)
+            if len(pal_found)>0: operon_withPAL.append(operonID)
+            ###
+            operonID=row["Operon Number"]
+            start_pos_list=[row["Start"]]
+        else:
+            start_pos_list.append(row["Start"])
+            operonID = row["Operon Number"]
+    operon_withPAL_column=[]
+    for index, row in df_allResult.iterrows():
+        if row["Operon Number"] in operon_withPAL:
+            operon_withPAL_column.append("IR Present")
+        else: operon_withPAL_column.append(np.nan)
+    df_allResult["IR in Promoter"] = operon_withPAL_column
+    return df_allResult

@@ -31,7 +31,7 @@ class Aca_Find_process:
     def run_process(self):
         sub_outputfolder_path=self.outputFolder
         file_list=[]
-        file=subprocess.Popen(['grep "CDS" %s'%(self.gff)],shell=True, stdout=subprocess.PIPE)
+        file=subprocess.Popen(['grep "CDS" %s|grep -v "#"'%(self.gff)],shell=True, stdout=subprocess.PIPE)
         for line in file.stdout:
             line = line.decode('utf-8').rstrip().split('\t')
             file_list.append(line)
@@ -160,8 +160,9 @@ class Aca_Find_process:
                             df_outTable["Pfam"]=pfam_list
                             df_outTable["Contig Length (nt)"]=contig_length_list
                             df_outTable = df_outTable[["Operon Number","Protein ID","Contig ID","Contig Length (nt)","Strand","Protein Length (nt)","Start","End","Acr Homolog","Potential Aca","AcaHMM HIT","Pfam","Complete CRISPR-Cas and STSS", "Operon in Prophage","Protein Sequence"]]
-                            df_allResult=pd.concat([df_allResult,df_outTable])
-                        df_allResult.to_csv(os.path.join(sub_outputfolder_path,"All_Aca_operons.csv"),index=False)
+                            df_allResult=pd.concat([df_allResult,df_outTable],ignore_index=True)
+                        df_allResult_withIRana=IR_find(df_allResult,self.fna,sub_outputfolder_path)
+                        df_allResult_withIRana.to_csv(os.path.join(sub_outputfolder_path,"All_Aca_operons.csv"),index=False)
 
                 else:
                     print("%s have %s number of identified Acr homologs, but not in the identified short gene operons, but no Aca candidate"% (self.faa, len(protein_NP_list)))

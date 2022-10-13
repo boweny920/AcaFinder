@@ -107,6 +107,15 @@ gunzip Pfam-A.hmm.gz
 hmmpress Pfam-A.hmm
 ```
 
+EMBOSS package - For palindromic repeats scanning in operon promoters
+
+Instal with Anaconda
+```sh
+conda install -c bioconda emboss
+```
+
+Check out other installation methods at : http://emboss.open-bio.org/html/use/ch02s07.html
+
 ****
 
 
@@ -179,7 +188,9 @@ AcrFinder needs **.fna**, **.gff** and **.faa** as input. Only **.fna** file as 
 |*<output_dir>*/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-*<operon_ID>*.faa.hmmout | hmmscan output of HTH search within short-Gene-Operons with Acr homologs |
 |*<output_dir>*/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-*<operon_ID>*.faa.hmmout.Coverage_parsed | hmmscan output of HTH search within short-Gene-Operons with Acr homologs |
 |*<output_dir>*/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-*<operon_ID>*.faa.hmmout.Coverage_parsed.new_found_ACA.faa | HTH positive proteins fasta sequences within short-Gene-Operons with Acr homologs |
-*<output_dir>*/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-*<operon_ID>*.faa.pfamScanOut | Pfam annoatations of proteins of short-Gene-Operons with Acr homologs |
+|*<output_dir>*/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-*<operon_ID>*.faa.pfamScanOut | Pfam annoatations of proteins of short-Gene-Operons with Acr homologs |
+|*<output_dir>*/Inverted_Repeats/OperonNumber-*<operon_ID>*_promoter-region.fna | Nucleotide sequence of promoter region extracted from predicted Acr-Aca operon |
+|*<output_dir>*/Inverted_Repeats/OperonNumber-*<operon_ID>*_promoter-region.fna.pal | Palindromic repeat regions found in operon promoter region |
 
 ****
 
