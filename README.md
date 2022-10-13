@@ -106,19 +106,19 @@ gunzip Pfam-A.hmm.gz
 #d. Prepare HMM files 
 hmmpress Pfam-A.hmm
 ```
-Make sure your system also has the following packages:
-1. <a href='https://diamond.readthedocs.io/en/latest/Getting-Started/Installation/'>Diamond</a>
-2. <a href='http://hmmer.org/documentation.html'>HMMER</a>
-3. <a href='https://github.com/hyattpd/Prodigal'>Prodigal</a>
-
 EMBOSS package - For palindromic repeats scanning in operon promoters
 
 Instal with Anaconda
 ```sh
 conda install -c bioconda emboss
 ```
-
 Check out other installation methods at : http://emboss.open-bio.org/html/use/ch02s07.html
+
+
+Make sure your system also has the following packages:
+1. <a href='https://diamond.readthedocs.io/en/latest/Getting-Started/Installation/'>Diamond</a>
+2. <a href='http://hmmer.org/documentation.html'>HMMER</a>
+3. <a href='https://github.com/hyattpd/Prodigal'>Prodigal</a>
 
 ****
 
