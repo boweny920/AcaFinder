@@ -1,0 +1,359 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.3.2 (Nov 2020); http://hmmer.org/
+# Copyright (C) 2020 Howard Hughes Medical Institute.
+# Freely distributed under the BSD open source license.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  HMM/AcaHMMs
+# target sequence database:        sample_organism/GCF_000381965.1_ASM38196v1_protein.faa
+# output directed to file:         Example_OUTput/log_acaHMM.hmm
+# per-dom hits tabular output:     Example_OUTput/Aca_HMM_hits.hmmOut
+# show alignments in output:       no
+# sequence reporting threshold:    E-value <= 1e-10
+# number of worker threads:        1
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       aca10  [M=109]
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence       Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------       -----------
+    8.9e-12   42.4   0.0      1e-11   42.2   0.0    1.1  1  WP_019934925.1  helix-turn-helix transcriptional regulator [O
+
+
+Domain annotation for each sequence:
+>> WP_019934925.1  helix-turn-helix transcriptional regulator [Oceanimonas smirnovii]
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   42.2   0.0   3.4e-15     1e-11      39      95 ..       9      61 ..       1      66 [. 0.87
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                            1  (109 nodes)
+Target sequences:                       3076  (990546 residues searched)
+Passed MSV filter:                       146  (0.0474642); expected 61.5 (0.02)
+Passed bias filter:                      103  (0.033485); expected 61.5 (0.02)
+Passed Vit filter:                        19  (0.00617685); expected 3.1 (0.001)
+Passed Fwd filter:                         8  (0.00260078); expected 0.0 (1e-05)
+Initial search space (Z):               3076  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.03u 0.00s 00:00:00.03 Elapsed: 00:00:00.02
+# Mc/sec: 3825.95
+//
+Query:       aca11  [M=68]
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence Description
+    ------- ------ -----    ------- ------ -----   ---- --  -------- -----------
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Domain annotation for each sequence:
+
+   [No targets detected that satisfy reporting thresholds]
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                            1  (68 nodes)
+Target sequences:                       3076  (990546 residues searched)
+Passed MSV filter:                        80  (0.0260078); expected 61.5 (0.02)
+Passed bias filter:                       77  (0.0250325); expected 61.5 (0.02)
+Passed Vit filter:                        18  (0.00585176); expected 3.1 (0.001)
+Passed Fwd filter:                         8  (0.00260078); expected 0.0 (1e-05)
+Initial search space (Z):               3076  [actual number of targets]
+Domain search space  (domZ):               0  [number of targets reported over threshold]
+# CPU time: 0.02u 0.01s 00:00:00.03 Elapsed: 00:00:00.01
+# Mc/sec: 5488.96
+//
+Query:       aca12  [M=142]
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence       Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------       -----------
+    8.7e-13   46.3   0.0    1.3e-12   45.7   0.0    1.2  1  WP_019933884.1  LexA family transcriptional regulator [Oceani
+
+
+Domain annotation for each sequence:
+>> WP_019933884.1  LexA family transcriptional regulator [Oceanimonas smirnovii]
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   45.7   0.0   4.3e-16   1.3e-12       5      66 ..       6      66 ..       2      79 .. 0.93
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                            1  (142 nodes)
+Target sequences:                       3076  (990546 residues searched)
+Passed MSV filter:                       132  (0.0429129); expected 61.5 (0.02)
+Passed bias filter:                       98  (0.0318596); expected 61.5 (0.02)
+Passed Vit filter:                        21  (0.00682705); expected 3.1 (0.001)
+Passed Fwd filter:                         8  (0.00260078); expected 0.0 (1e-05)
+Initial search space (Z):               3076  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.03u 0.00s 00:00:00.03 Elapsed: 00:00:00.02
+# Mc/sec: 4863.62
+//
+Query:       aca1  [M=89]
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence Description
+    ------- ------ -----    ------- ------ -----   ---- --  -------- -----------
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Domain annotation for each sequence:
+
+   [No targets detected that satisfy reporting thresholds]
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                            1  (89 nodes)
+Target sequences:                       3076  (990546 residues searched)
+Passed MSV filter:                       195  (0.063394); expected 61.5 (0.02)
+Passed bias filter:                      162  (0.0526658); expected 61.5 (0.02)
+Passed Vit filter:                        36  (0.0117035); expected 3.1 (0.001)
+Passed Fwd filter:                        16  (0.00520156); expected 0.0 (1e-05)
+Initial search space (Z):               3076  [actual number of targets]
+Domain search space  (domZ):               0  [number of targets reported over threshold]
+# CPU time: 0.04u 0.00s 00:00:00.04 Elapsed: 00:00:00.03
+# Mc/sec: 2638.63
+//
+Query:       aca2  [M=126]
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence       Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------       -----------
+    2.4e-27   93.1   0.1    2.5e-27   93.0   0.1    1.0  1  WP_019933869.1  DUF1870 family protein [Oceanimonas smirnovii
+    1.3e-12   45.4   0.0    1.9e-12   45.0   0.0    1.2  1  WP_019933884.1  LexA family transcriptional regulator [Oceani
+
+
+Domain annotation for each sequence:
+>> WP_019933869.1  DUF1870 family protein [Oceanimonas smirnovii]
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   93.0   0.1   1.6e-30   2.5e-27       2     115 ..       1     118 [.       1     125 [] 0.90
+
+>> WP_019933884.1  LexA family transcriptional regulator [Oceanimonas smirnovii]
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   45.0   0.0   1.2e-15   1.9e-12       4      64 ..       5      64 ..       2      76 .. 0.90
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                            1  (126 nodes)
+Target sequences:                       3076  (990546 residues searched)
+Passed MSV filter:                       152  (0.0494148); expected 61.5 (0.02)
+Passed bias filter:                      119  (0.0386866); expected 61.5 (0.02)
+Passed Vit filter:                        34  (0.0110533); expected 3.1 (0.001)
+Passed Fwd filter:                        11  (0.00357607); expected 0.0 (1e-05)
+Initial search space (Z):               3076  [actual number of targets]
+Domain search space  (domZ):               2  [number of targets reported over threshold]
+# CPU time: 0.04u 0.00s 00:00:00.04 Elapsed: 00:00:00.02
+# Mc/sec: 4245.62
+//
+Query:       aca3  [M=99]
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence       Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------       -----------
+    6.1e-13   46.2   0.0    8.7e-13   45.7   0.0    1.2  1  WP_019933884.1  LexA family transcriptional regulator [Oceani
+
+
+Domain annotation for each sequence:
+>> WP_019933884.1  LexA family transcriptional regulator [Oceanimonas smirnovii]
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   45.7   0.0   2.8e-16   8.7e-13      13      69 ..       4      62 ..       1      82 [. 0.86
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                            1  (99 nodes)
+Target sequences:                       3076  (990546 residues searched)
+Passed MSV filter:                       199  (0.0646944); expected 61.5 (0.02)
+Passed bias filter:                      166  (0.0539662); expected 61.5 (0.02)
+Passed Vit filter:                        39  (0.0126788); expected 3.1 (0.001)
+Passed Fwd filter:                        10  (0.00325098); expected 0.0 (1e-05)
+Initial search space (Z):               3076  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.03u 0.00s 00:00:00.03 Elapsed: 00:00:00.02
+# Mc/sec: 3835.24
+//
+Query:       aca4  [M=89]
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence Description
+    ------- ------ -----    ------- ------ -----   ---- --  -------- -----------
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Domain annotation for each sequence:
+
+   [No targets detected that satisfy reporting thresholds]
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                            1  (89 nodes)
+Target sequences:                       3076  (990546 residues searched)
+Passed MSV filter:                       242  (0.0786736); expected 61.5 (0.02)
+Passed bias filter:                      171  (0.0555917); expected 61.5 (0.02)
+Passed Vit filter:                        41  (0.013329); expected 3.1 (0.001)
+Passed Fwd filter:                         8  (0.00260078); expected 0.0 (1e-05)
+Initial search space (Z):               3076  [actual number of targets]
+Domain search space  (domZ):               0  [number of targets reported over threshold]
+# CPU time: 0.03u 0.00s 00:00:00.03 Elapsed: 00:00:00.03
+# Mc/sec: 2457.68
+//
+Query:       aca5  [M=83]
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence       Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------       -----------
+    4.9e-11   40.2   0.0    1.2e-10   39.0   0.0    1.6  1  WP_019933884.1  LexA family transcriptional regulator [Oceani
+
+
+Domain annotation for each sequence:
+>> WP_019933884.1  LexA family transcriptional regulator [Oceanimonas smirnovii]
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   39.0   0.0   3.8e-14   1.2e-10       5      49 ..       4      49 ..       1      73 [. 0.78
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                            1  (83 nodes)
+Target sequences:                       3076  (990546 residues searched)
+Passed MSV filter:                       123  (0.039987); expected 61.5 (0.02)
+Passed bias filter:                      117  (0.0380364); expected 61.5 (0.02)
+Passed Vit filter:                        26  (0.00845254); expected 3.1 (0.001)
+Passed Fwd filter:                         6  (0.00195059); expected 0.0 (1e-05)
+Initial search space (Z):               3076  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.02u 0.00s 00:00:00.02 Elapsed: 00:00:00.02
+# Mc/sec: 3871.93
+//
+Query:       aca6  [M=99]
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence       Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------       -----------
+    6.4e-16   55.8   0.0    8.7e-16   55.3   0.0    1.2  1  WP_019933884.1  LexA family transcriptional regulator [Oceani
+
+
+Domain annotation for each sequence:
+>> WP_019933884.1  LexA family transcriptional regulator [Oceanimonas smirnovii]
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   55.3   0.0   2.8e-19   8.7e-16       4      65 ..       4      69 ..       1     104 [. 0.85
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                            1  (99 nodes)
+Target sequences:                       3076  (990546 residues searched)
+Passed MSV filter:                       205  (0.066645); expected 61.5 (0.02)
+Passed bias filter:                      179  (0.0581925); expected 61.5 (0.02)
+Passed Vit filter:                        43  (0.0139792); expected 3.1 (0.001)
+Passed Fwd filter:                        13  (0.00422627); expected 0.0 (1e-05)
+Initial search space (Z):               3076  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.03u 0.00s 00:00:00.03 Elapsed: 00:00:00.02
+# Mc/sec: 3766.69
+//
+Query:       aca7  [M=72]
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence Description
+    ------- ------ -----    ------- ------ -----   ---- --  -------- -----------
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Domain annotation for each sequence:
+
+   [No targets detected that satisfy reporting thresholds]
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                            1  (72 nodes)
+Target sequences:                       3076  (990546 residues searched)
+Passed MSV filter:                       155  (0.0503901); expected 61.5 (0.02)
+Passed bias filter:                      131  (0.0425878); expected 61.5 (0.02)
+Passed Vit filter:                        28  (0.00910273); expected 3.1 (0.001)
+Passed Fwd filter:                        10  (0.00325098); expected 0.0 (1e-05)
+Initial search space (Z):               3076  [actual number of targets]
+Domain search space  (domZ):               0  [number of targets reported over threshold]
+# CPU time: 0.03u 0.00s 00:00:00.03 Elapsed: 00:00:00.02
+# Mc/sec: 2682.51
+//
+Query:       aca8  [M=56]
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence Description
+    ------- ------ -----    ------- ------ -----   ---- --  -------- -----------
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Domain annotation for each sequence:
+
+   [No targets detected that satisfy reporting thresholds]
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                            1  (56 nodes)
+Target sequences:                       3076  (990546 residues searched)
+Passed MSV filter:                       109  (0.0354356); expected 61.5 (0.02)
+Passed bias filter:                      106  (0.0344603); expected 61.5 (0.02)
+Passed Vit filter:                        22  (0.00715215); expected 3.1 (0.001)
+Passed Fwd filter:                         2  (0.000650195); expected 0.0 (1e-05)
+Initial search space (Z):               3076  [actual number of targets]
+Domain search space  (domZ):               0  [number of targets reported over threshold]
+# CPU time: 0.02u 0.00s 00:00:00.02 Elapsed: 00:00:00.01
+# Mc/sec: 3025.08
+//
+Query:       aca9  [M=136]
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence       Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------       -----------
+    1.1e-12   45.6   0.0    1.6e-12   45.2   0.0    1.2  1  WP_019933884.1  LexA family transcriptional regulator [Oceani
+
+
+Domain annotation for each sequence:
+>> WP_019933884.1  LexA family transcriptional regulator [Oceanimonas smirnovii]
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   45.2   0.0   5.1e-16   1.6e-12      32      92 ..       1      63 [.       1      84 [. 0.90
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                            1  (136 nodes)
+Target sequences:                       3076  (990546 residues searched)
+Passed MSV filter:                       212  (0.0689207); expected 61.5 (0.02)
+Passed bias filter:                      142  (0.0461638); expected 61.5 (0.02)
+Passed Vit filter:                        38  (0.0123537); expected 3.1 (0.001)
+Passed Fwd filter:                        16  (0.00520156); expected 0.0 (1e-05)
+Initial search space (Z):               3076  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.05u 0.00s 00:00:00.05 Elapsed: 00:00:00.03
+# Mc/sec: 3499.02
+//
+[ok]

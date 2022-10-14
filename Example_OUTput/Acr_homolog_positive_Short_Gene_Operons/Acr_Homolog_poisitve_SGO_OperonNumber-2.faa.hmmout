@@ -1,0 +1,16 @@
+#                                                                            --- full sequence --- -------------- this domain -------------   hmm coord   ali coord   env coord
+# target name        accession   tlen query name           accession   qlen   E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
+#------------------- ---------- ----- -------------------- ---------- ----- --------- ------ ----- --- --- --------- --------- ------ ----- ----- ----- ----- ----- ----- ----- ---- ---------------------
+HTH_17               PF12728.10    51 WP_019933895.1       -             69   6.6e-13   43.1   0.1   1   1   7.7e-15   8.4e-13   42.8   0.1     3    50    17    66    16    67 0.95 Helix-turn-helix domain
+HTH_Tnp_1_2          PF13022.9    123 WP_019933895.1       -             69   0.00026   15.5   0.1   1   1   2.4e-06   0.00027   15.5   0.1    10    56     2    46     1    64 0.89 Helix-turn-helix of insertion element transposase
+MerR_1               PF13411.9     69 WP_019933895.1       -             69   0.00026   15.4   0.0   1   1     3e-06   0.00032   15.1   0.0     2    44    17    60    16    62 0.90 MerR HTH family regulatory protein
+#
+# Program:         hmmscan
+# Version:         3.3.2 (Nov 2020)
+# Pipeline mode:   SCAN
+# Query file:      Example_OUTput/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-2.faa
+# Target file:     HMM/HTH_HMM
+# Option settings: hmmscan -o Example_OUTput/log_HTH.hmm --domtblout Example_OUTput/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-2.faa.hmmout --noali -E 1e-3 --cpu 1 HMM/HTH_HMM Example_OUTput/Acr_homolog_positive_Short_Gene_Operons/Acr_Homolog_poisitve_SGO_OperonNumber-2.faa 
+# Current dir:     /mnt/array1/bowen/AcaFinder_project/AcaFinder_Ver7
+# Date:            Wed Oct 12 18:21:14 2022
+# [ok]
